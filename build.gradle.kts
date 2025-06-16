@@ -36,19 +36,23 @@ dependencies {
 if (!rootProject.extra.has("install-git-hooks")) {
     rootProject.extra["install-git-hooks"] = true
 
-    val preCommit: TaskProvider<InstallPreCommitHookTask> = project.rootProject.tasks.register(
-        "installPreCommitHook", InstallPreCommitHookTask::class
-    ) {
-        group = "build setup"
-        description = "Installs Kotlinter Git pre-commit hook"
-    }
+    val preCommit: TaskProvider<InstallPreCommitHookTask> =
+        project.rootProject.tasks.register(
+            "installPreCommitHook",
+            InstallPreCommitHookTask::class
+        ) {
+            group = "build setup"
+            description = "Installs Kotlinter Git pre-commit hook"
+        }
 
-    val prePush: TaskProvider<InstallPrePushHookTask> = project.rootProject.tasks.register(
-        "installPrePushHook", InstallPrePushHookTask::class
-    ) {
-        group = "build setup"
-        description = "Installs Kotlinter Git pre-push hook"
-    }
+    val prePush: TaskProvider<InstallPrePushHookTask> =
+        project.rootProject.tasks.register(
+            "installPrePushHook",
+            InstallPrePushHookTask::class
+        ) {
+            group = "build setup"
+            description = "Installs Kotlinter Git pre-push hook"
+        }
 
     project.rootProject.tasks.named("prepareKotlinBuildScriptModel") {
         dependsOn(preCommit, prePush)
