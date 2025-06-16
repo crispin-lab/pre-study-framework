@@ -11,7 +11,7 @@ plugins {
 
 group = "com.crispinlab"
 version = "0.0.1-SNAPSHOT"
-val kotlinSnowflakeVersion = "0.0.5"
+val kotlinSnowflakeVersion = "1.0.1"
 
 java {
     toolchain {
