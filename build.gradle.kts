@@ -54,6 +54,31 @@ if (!rootProject.extra.has("install-git-hooks")) {
             description = "Installs Kotlinter Git pre-push hook"
         }
 
+    project.rootProject.tasks.named("installPrePushHook").configure {
+        doLast {
+            val hookFile = File(project.rootDir, ".git/hooks/pre-push")
+            if (hookFile.exists()) {
+                hookFile.writeText(
+                    """
+                    #!/bin/sh
+                    set -e
+
+                    GRADLEW=/Users/crispin/Documents/personal/git/pre-study-framework/gradlew
+                    
+                    ${'$'}GRADLEW test
+
+                    if ! ${'$'}GRADLEW lintKotlin ; then
+                        echo 1>&2 "\nlintKotlin found problems, running formatKotlin; commit the result and re-push"
+                        ${'$'}GRADLEW formatKotlin
+                        exit 1
+                    fi
+                    """.trimIndent()
+                )
+                hookFile.setExecutable(true)
+            }
+        }
+    }
+
     project.rootProject.tasks.named("prepareKotlinBuildScriptModel") {
         dependsOn(preCommit, prePush)
     }
