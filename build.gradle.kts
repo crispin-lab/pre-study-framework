@@ -12,6 +12,7 @@ plugins {
 group = "com.crispinlab"
 version = "0.0.1-SNAPSHOT"
 val kotlinSnowflakeVersion = "1.0.1"
+val springSecurityCryptoVersion = "6.5.0"
 
 java {
     toolchain {
@@ -28,6 +29,9 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("io.github.crispindeity:kotlin-snowflake:$kotlinSnowflakeVersion")
+    implementation(
+        "org.springframework.security:spring-security-crypto:$springSecurityCryptoVersion"
+    )
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
