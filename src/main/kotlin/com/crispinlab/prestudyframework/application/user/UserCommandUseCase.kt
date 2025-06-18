@@ -14,6 +14,10 @@ internal interface UserCommandUseCase {
             fun success(): RegisterResponse {
                 return RegisterResponse(code = 200, message = "success")
             }
+
+            fun fail(message: String): RegisterResponse {
+                return RegisterResponse(code = 300, message = message)
+            }
         }
     }
 
