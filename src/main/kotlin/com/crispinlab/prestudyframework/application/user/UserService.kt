@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service
 @Service
 internal class UserService(
     private val snowflake: Snowflake,
+    private val passwordHelper: PasswordHelper,
     private val userRegisterPort: UserRegisterPort
 ) : RegisterUserUseCase {
     private val logger: Logger = Log.getLogger(UserService::class.java)
