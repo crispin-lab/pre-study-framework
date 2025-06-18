@@ -3,7 +3,7 @@ package com.crispinlab.prestudyframework.application.user
 import com.crispinlab.Snowflake
 import com.crispinlab.prestudyframework.fake.PasswordFakeHelper
 import com.crispinlab.prestudyframework.fake.UserFakePort
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.SoftAssertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -23,7 +23,8 @@ class UserServiceTest {
             UserService(
                 snowflake = snowflake,
                 userCommandPort = userFakePort,
-                passwordHelper = passwordFakeHelper
+                passwordHelper = passwordFakeHelper,
+                userQueryPort = userFakePort
             )
     }
 
@@ -47,13 +48,15 @@ class UserServiceTest {
                 val actual: UserCommandUseCase.RegisterResponse = userService.registerUser(request)
 
                 // then
-                Assertions.assertThat(actual).isNotNull
-                Assertions.assertThat(actual.code).isEqualTo(200)
-                Assertions.assertThat(actual.message).isEqualTo("success")
-                Assertions.assertThat(userFakePort.findBy(request.username))
-                    .isNotNull()
-                    .extracting { it!!.username }
-                    .isEqualTo(request.username)
+                SoftAssertions.assertSoftly { softAssertions ->
+                    softAssertions.assertThat(actual).isNotNull
+                    softAssertions.assertThat(actual.code).isEqualTo(200)
+                    softAssertions.assertThat(actual.message).isEqualTo("success")
+                    softAssertions.assertThat(userFakePort.findBy(request.username))
+                        .isNotNull()
+                        .extracting { it!!.username }
+                        .isEqualTo(request.username)
+                }
             }
         }
     }
