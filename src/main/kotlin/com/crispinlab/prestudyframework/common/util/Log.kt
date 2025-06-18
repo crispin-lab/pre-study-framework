@@ -1,7 +1,7 @@
-package com.crispinlab.prestudyframework.util
+package com.crispinlab.prestudyframework.common.util
 
-import com.crispinlab.prestudyframework.exception.CustomException
-import com.crispinlab.prestudyframework.exception.ErrorCode
+import com.crispinlab.prestudyframework.common.exception.CustomException
+import com.crispinlab.prestudyframework.common.exception.ErrorCode
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

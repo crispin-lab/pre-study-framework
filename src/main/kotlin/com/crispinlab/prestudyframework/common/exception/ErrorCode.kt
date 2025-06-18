@@ -1,4 +1,4 @@
-package com.crispinlab.prestudyframework.exception
+package com.crispinlab.prestudyframework.common.exception
 
 internal interface CodeInterface {
     val code: Int
