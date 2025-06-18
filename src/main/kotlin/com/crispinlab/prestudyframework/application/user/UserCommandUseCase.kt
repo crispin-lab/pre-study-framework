@@ -1,6 +1,6 @@
 package com.crispinlab.prestudyframework.application.user
 
-internal interface RegisterUserUseCase {
+internal interface UserCommandUseCase {
     data class RegisterRequest(
         val username: String,
         val password: String
