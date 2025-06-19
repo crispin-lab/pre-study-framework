@@ -59,5 +59,30 @@ class UserServiceTest {
                 }
             }
         }
+
+        @Nested
+        @DisplayName("회원 가입 실패 테스트")
+        inner class UserRegisterFailTest() {
+            @Test
+            @DisplayName("동일한 username 으로 회원가입 요청 시 회원가입이 실패해야 한다.")
+            fun registerFailTest1() {
+                // given
+                val request =
+                    UserCommandUseCase.RegisterRequest(
+                        username = "test_user",
+                        password = "1234"
+                    )
+                userService.registerUser(request)
+
+                // when
+                val actual: UserCommandUseCase.RegisterResponse = userService.registerUser(request)
+
+                // then
+                SoftAssertions.assertSoftly { softAssertions ->
+                    softAssertions.assertThat(actual.code).isEqualTo(300)
+                    softAssertions.assertThat(actual.message).isEqualTo("duplicate username")
+                }
+            }
+        }
     }
 }
