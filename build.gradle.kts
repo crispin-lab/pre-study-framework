@@ -13,6 +13,7 @@ group = "com.crispinlab"
 version = "0.0.1-SNAPSHOT"
 val kotlinSnowflakeVersion = "1.0.1"
 val springSecurityCryptoVersion = "6.5.0"
+val nimbusJWTVersion = "10.3"
 
 java {
     toolchain {
@@ -32,6 +33,7 @@ dependencies {
     implementation(
         "org.springframework.security:spring-security-crypto:$springSecurityCryptoVersion"
     )
+    implementation("com.nimbusds:nimbus-jose-jwt:$nimbusJWTVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
