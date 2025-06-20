@@ -14,4 +14,8 @@ class UserPersistenceAdapter : UserCommandPort, UserQueryPort {
     override fun existBy(username: String): Boolean {
         TODO("Not yet implemented")
     }
+
+    override fun findBy(username: String): User {
+        TODO("Not yet implemented")
+    }
 }

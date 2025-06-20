@@ -7,7 +7,7 @@ import com.crispinlab.prestudyframework.domain.user.User
 class UserFakePort : UserCommandPort, UserQueryPort {
     private val storage: MutableMap<Long, User> = mutableMapOf()
 
-    fun findBy(username: String): User? = storage.values.find { it.username == username }
+    override fun findBy(username: String): User? = storage.values.find { it.username == username }
 
     override fun register(user: User) {
         storage[user.id] = user
