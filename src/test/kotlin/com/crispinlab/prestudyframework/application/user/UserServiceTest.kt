@@ -119,5 +119,56 @@ class UserServiceTest {
                 }
             }
         }
+
+        @Nested
+        @DisplayName("로그인 실패 테스트")
+        inner class UserLoginFailTest() {
+            @Test
+            @DisplayName("등록되지 않은 유저로 로그인 요청 시 로그인에 실패해야 한다.")
+            fun loginFailTest1() {
+                // given
+                val request =
+                    UserCommandUseCase.LoginRequest(
+                        username = "test_user",
+                        password = "1234"
+                    )
+
+                // when
+                val actual: UserCommandUseCase.LoginResponse = userService.loginUser(request)
+
+                // then
+                SoftAssertions.assertSoftly { softAssertions ->
+                    softAssertions.assertThat(actual.code).isEqualTo(300)
+                    softAssertions.assertThat(actual.message).isEqualTo("unregistered user")
+                }
+            }
+
+            @Test
+            @DisplayName("패스워드가 일치 하지 않는 경우 예외가 발생해야 한다.")
+            fun loginFailTest2() {
+                // given
+                val registerRequest =
+                    UserCommandUseCase.RegisterRequest(
+                        username = "test_user",
+                        password = "1234"
+                    )
+                userService.registerUser(registerRequest)
+
+                val request =
+                    UserCommandUseCase.LoginRequest(
+                        username = "test_user",
+                        password = "12345"
+                    )
+
+                // when
+                val actual: UserCommandUseCase.LoginResponse = userService.loginUser(request)
+
+                // then
+                SoftAssertions.assertSoftly { softAssertions ->
+                    softAssertions.assertThat(actual.code).isEqualTo(300)
+                    softAssertions.assertThat(actual.message).isEqualTo("invalid password")
+                }
+            }
+        }
     }
 }
