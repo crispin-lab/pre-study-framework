@@ -21,5 +21,27 @@ internal interface UserCommandUseCase {
         }
     }
 
+    data class LoginRequest(
+        val username: String,
+        val password: String
+    )
+
+    class LoginResponse private constructor(
+        val code: Int,
+        val message: String
+    ) {
+        companion object {
+            fun success(): LoginResponse {
+                return LoginResponse(code = 200, message = "success")
+            }
+
+            fun fail(message: String): LoginResponse {
+                return LoginResponse(code = 300, message = message)
+            }
+        }
+    }
+
     fun registerUser(request: RegisterRequest): RegisterResponse
+
+    fun loginUser(request: LoginRequest): LoginResponse
 }
