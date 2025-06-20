@@ -85,4 +85,39 @@ class UserServiceTest {
             }
         }
     }
+
+    @Nested
+    @DisplayName("로그인 테스트")
+    inner class UserLoginTest() {
+        @Nested
+        @DisplayName("로그인 성공 테스트")
+        inner class UserLoginSuccessTest() {
+            @Test
+            @DisplayName("로그인을 할 수 있어야 한다.")
+            fun loginTest() {
+                // given
+                val registerRequest =
+                    UserCommandUseCase.RegisterRequest(
+                        username = "test_user",
+                        password = "1234"
+                    )
+                userService.registerUser(registerRequest)
+
+                val request =
+                    UserCommandUseCase.LoginRequest(
+                        username = "test_user",
+                        password = "1234"
+                    )
+
+                // when
+                val actual: UserCommandUseCase.LoginResponse = userService.loginUser(request)
+
+                // then
+                SoftAssertions.assertSoftly { softAssertions ->
+                    softAssertions.assertThat(actual.code).isEqualTo(200)
+                    softAssertions.assertThat(actual.message).isEqualTo("success")
+                }
+            }
+        }
+    }
 }
