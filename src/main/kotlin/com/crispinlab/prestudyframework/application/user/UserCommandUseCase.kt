@@ -28,11 +28,12 @@ internal interface UserCommandUseCase {
 
     class LoginResponse private constructor(
         val code: Int,
-        val message: String
+        val message: String,
+        val token: String? = null
     ) {
         companion object {
-            fun success(): LoginResponse {
-                return LoginResponse(code = 200, message = "success")
+            fun success(token: String): LoginResponse {
+                return LoginResponse(code = 200, message = "success", token = token)
             }
 
             fun fail(message: String): LoginResponse {

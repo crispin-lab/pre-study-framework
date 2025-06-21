@@ -13,7 +13,8 @@ internal class UserService(
     private val snowflake: Snowflake,
     private val passwordHelper: PasswordHelper,
     private val userCommandPort: UserCommandPort,
-    private val userQueryPort: UserQueryPort
+    private val userQueryPort: UserQueryPort,
+    private val jwtHelper: JWTHelper
 ) : UserCommandUseCase {
     private val logger: Logger = Log.getLogger(UserService::class.java)
 
@@ -37,11 +38,6 @@ internal class UserService(
             return@logging UserCommandUseCase.RegisterResponse.success()
         }
 
-    /*
-    todo    :: jwt 토큰 발급 로직 추가 필요
-     author :: heechoel shin
-     date   :: 2025-06-20T16:37:14KST
-     */
     override fun loginUser(
         request: UserCommandUseCase.LoginRequest
     ): UserCommandUseCase.LoginResponse =
@@ -61,6 +57,8 @@ internal class UserService(
                 return@logging UserCommandUseCase.LoginResponse.fail("invalid password")
             }
 
-            return@logging UserCommandUseCase.LoginResponse.success()
+            val createdJWT: String = jwtHelper.createJWT(foundUser.id)
+
+            return@logging UserCommandUseCase.LoginResponse.success(createdJWT)
         }
 }
