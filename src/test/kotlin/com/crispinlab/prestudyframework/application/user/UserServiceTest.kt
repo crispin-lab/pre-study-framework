@@ -1,6 +1,7 @@
 package com.crispinlab.prestudyframework.application.user
 
 import com.crispinlab.Snowflake
+import com.crispinlab.prestudyframework.fake.JWTFakeHelper
 import com.crispinlab.prestudyframework.fake.PasswordFakeHelper
 import com.crispinlab.prestudyframework.fake.UserFakePort
 import org.assertj.core.api.SoftAssertions
@@ -13,18 +14,21 @@ class UserServiceTest {
     private lateinit var userService: UserService
     private lateinit var userFakePort: UserFakePort
     private lateinit var passwordFakeHelper: PasswordFakeHelper
+    private lateinit var jwtFakeHelper: JWTFakeHelper
     private val snowflake = Snowflake.create(nodeId = 100)
 
     @BeforeEach
     fun setUp() {
         userFakePort = UserFakePort()
         passwordFakeHelper = PasswordFakeHelper()
+        jwtFakeHelper = JWTFakeHelper()
         userService =
             UserService(
                 snowflake = snowflake,
                 userCommandPort = userFakePort,
                 passwordHelper = passwordFakeHelper,
-                userQueryPort = userFakePort
+                userQueryPort = userFakePort,
+                jwtHelper = jwtFakeHelper
             )
     }
 
@@ -116,6 +120,7 @@ class UserServiceTest {
                 SoftAssertions.assertSoftly { softAssertions ->
                     softAssertions.assertThat(actual.code).isEqualTo(200)
                     softAssertions.assertThat(actual.message).isEqualTo("success")
+                    softAssertions.assertThat(actual.token).isNotNull
                 }
             }
         }
