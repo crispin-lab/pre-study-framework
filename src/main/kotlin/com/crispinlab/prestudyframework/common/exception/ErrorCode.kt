@@ -9,5 +9,6 @@ internal enum class ErrorCode(
     override val code: Int,
     override var message: String
 ) : CodeInterface {
-    FAILED_TO_INVOKE_IN_LOG(code = 100, message = "failed to invoke in log.")
+    FAILED_TO_INVOKE_IN_LOG(code = 100, message = "failed to invoke in log."),
+    INVALID_REQUEST_VALUE(code = 101, message = "invalid request value.")
 }
