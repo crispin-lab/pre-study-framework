@@ -1,6 +1,5 @@
 package com.crispinlab.prestudyframework.application.user
 
-import com.crispinlab.Snowflake
 import com.crispinlab.prestudyframework.application.user.port.UserCommandPort
 import com.crispinlab.prestudyframework.application.user.port.UserQueryPort
 import com.crispinlab.prestudyframework.common.util.Log
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service
 
 @Service
 internal class UserService(
-    private val snowflake: Snowflake,
     private val passwordHelper: PasswordHelper,
     private val userCommandPort: UserCommandPort,
     private val userQueryPort: UserQueryPort,
@@ -29,7 +27,6 @@ internal class UserService(
 
             val user =
                 User(
-                    id = snowflake.nextId(),
                     username = request.username,
                     password = passwordHelper.encode(request.password)
                 )

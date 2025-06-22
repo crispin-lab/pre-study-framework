@@ -1,6 +1,5 @@
 package com.crispinlab.prestudyframework.application.user
 
-import com.crispinlab.Snowflake
 import com.crispinlab.prestudyframework.fake.JWTFakeHelper
 import com.crispinlab.prestudyframework.fake.PasswordFakeHelper
 import com.crispinlab.prestudyframework.fake.UserFakePort
@@ -15,7 +14,6 @@ class UserServiceTest {
     private lateinit var userFakePort: UserFakePort
     private lateinit var passwordFakeHelper: PasswordFakeHelper
     private lateinit var jwtFakeHelper: JWTFakeHelper
-    private val snowflake = Snowflake.create(nodeId = 100)
 
     @BeforeEach
     fun setUp() {
@@ -24,7 +22,6 @@ class UserServiceTest {
         jwtFakeHelper = JWTFakeHelper()
         userService =
             UserService(
-                snowflake = snowflake,
                 userCommandPort = userFakePort,
                 passwordHelper = passwordFakeHelper,
                 userQueryPort = userFakePort,
