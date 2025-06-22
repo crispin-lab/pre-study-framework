@@ -36,6 +36,7 @@ dependencies {
     )
     implementation("com.nimbusds:nimbus-jose-jwt:$nimbusJWTVersion")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     runtimeOnly("com.h2database:h2")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
