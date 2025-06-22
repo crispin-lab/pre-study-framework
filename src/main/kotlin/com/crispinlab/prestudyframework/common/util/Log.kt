@@ -28,6 +28,18 @@ internal object Log {
         return result ?: throw CustomException(ErrorCode.FAILED_TO_INVOKE_IN_LOG)
     }
 
+    fun <T> warnLogging(
+        log: Logger,
+        function: (MutableMap<String, Any>) -> T?
+    ): T {
+        val logWarn: MutableMap<String, Any> = mutableMapOf()
+        val result: T? = function.invoke(logWarn)
+
+        log.warn(logWarn.toString())
+
+        return result ?: throw CustomException(ErrorCode.FAILED_TO_INVOKE_IN_LOG)
+    }
+
     fun now() = System.currentTimeMillis()
 
     private fun measureTime(
