@@ -47,7 +47,7 @@ class PersistableTest {
     }
 
     @Test
-    @DisplayName("Persistable 구현체를 사용했들때")
+    @DisplayName("Persistable 구현체를 사용했을때")
     fun persistableTest() {
         val stats: Statistics =
             entityManager.entityManager
