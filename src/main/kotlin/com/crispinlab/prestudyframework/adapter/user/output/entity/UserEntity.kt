@@ -10,6 +10,6 @@ import jakarta.persistence.Table
 internal class UserEntity(
     @Column(nullable = false, length = 20)
     val username: String,
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 64)
     val password: String
 ) : BaseEntity()

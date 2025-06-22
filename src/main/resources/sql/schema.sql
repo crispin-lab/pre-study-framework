@@ -7,7 +7,7 @@ create table users
   id         bigint                      not null,
   updated_at timestamp(6) with time zone not null,
   updated_by bigint                      not null,
-  password   varchar(20)                 not null,
+  password   varchar(64)                 not null,
   username   varchar(20)                 not null,
   primary key (id)
 )
