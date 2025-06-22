@@ -1,4 +1,4 @@
-package com.crispinlab.prestudyframework.adapter.user.output.repository
+package com.crispinlab.prestudyframework.study
 
 import com.crispinlab.prestudyframework.fake.UserFakeEntity
 import com.crispinlab.prestudyframework.fake.UserFakeEntity2
