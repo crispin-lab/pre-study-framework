@@ -1,8 +1,11 @@
 package com.crispinlab.prestudyframework.adapter.user.input.web.response
 
+import com.fasterxml.jackson.annotation.JsonInclude
+
 internal class UserResponse<T> private constructor(
     private val code: Int,
     private val message: String,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private val result: T? = null
 ) {
     companion object {
