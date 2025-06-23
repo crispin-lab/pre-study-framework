@@ -1,0 +1,132 @@
+openapi: 3.0.1
+info:
+  title: Pre Study
+  description: API Documents
+  version: 1.0.0
+servers:
+- url: http://localhost:8080
+tags: []
+paths:
+  /api/users:
+    post:
+      tags:
+      - User
+      summary: 회원 가입 API
+      description: 사용자를 등록한다.
+      operationId: user-register
+      parameters:
+      - name: Accept
+        in: header
+        description: API 버전 관리를 위한 ACCEPT
+        required: false
+        schema:
+          type: string
+        example: application/vnd.pre-study.com-v1+json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/api-users-735123830"
+            examples:
+              user-register2:
+                value: |-
+                  {
+                    "username" : "test09",
+                    "password" : "abcDEF123"
+                  }
+              user-register:
+                value: |-
+                  {
+                    "username" : "test09",
+                    "password" : "abcDEF123"
+                  }
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/vnd.pre-study.com-v1+json:
+              schema:
+                $ref: "#/components/schemas/api-users623876813"
+              examples:
+                user-register2:
+                  value: |-
+                    {
+                      "code" : 200,
+                      "message" : "success"
+                    }
+                user-register:
+                  value: |-
+                    {
+                      "code" : 200,
+                      "message" : "success"
+                    }
+  /api/users/login:
+    post:
+      tags:
+      - User
+      summary: 회원 가입 API
+      description: 사용자를 등록한다.
+      operationId: user-login
+      parameters:
+      - name: Accept
+        in: header
+        description: API 버전 관리를 위한 ACCEPT
+        required: false
+        schema:
+          type: string
+        example: application/vnd.pre-study.com-v1+json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/api-users-735123830"
+            examples:
+              user-login:
+                value: |-
+                  {
+                    "username" : "test09",
+                    "password" : "abcDEF123"
+                  }
+      responses:
+        "200":
+          description: "200"
+          headers:
+            Authorization:
+              description: Auth 토큰 값
+              schema:
+                type: string
+            Set-Cookie:
+              description: Auth Cookie
+              schema:
+                type: string
+          content:
+            application/vnd.pre-study.com-v1+json:
+              schema:
+                $ref: "#/components/schemas/api-users623876813"
+              examples:
+                user-login:
+                  value: |-
+                    {
+                      "code" : 200,
+                      "message" : "success"
+                    }
+components:
+  schemas:
+    api-users623876813:
+      type: object
+      properties:
+        code:
+          type: number
+          description: 응답 코드
+        message:
+          type: string
+          description: 응답 메시지
+    api-users-735123830:
+      type: object
+      properties:
+        password:
+          type: string
+          description: 사용자 비밀번호
+        username:
+          type: string
+          description: 사용자 이름
