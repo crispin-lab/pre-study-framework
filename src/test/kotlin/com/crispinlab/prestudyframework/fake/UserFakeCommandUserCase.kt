@@ -9,7 +9,5 @@ internal class UserFakeCommandUserCase : UserCommandUseCase {
 
     override fun loginUser(
         request: UserCommandUseCase.LoginRequest
-    ): UserCommandUseCase.LoginResponse {
-        TODO("Not yet implemented")
-    }
+    ): UserCommandUseCase.LoginResponse = UserCommandUseCase.LoginResponse.success("testToken")
 }
