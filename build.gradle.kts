@@ -8,6 +8,7 @@ plugins {
     id("org.jmailen.kotlinter") version "4.3.0"
     id("org.springframework.boot") version "3.5.0"
     id("io.spring.dependency-management") version "1.1.7"
+    id("com.epages.restdocs-api-spec") version "0.18.2"
 }
 
 group = "com.crispinlab"
@@ -15,6 +16,7 @@ version = "0.0.1-SNAPSHOT"
 val kotlinSnowflakeVersion = "1.0.1"
 val springSecurityCryptoVersion = "6.5.0"
 val nimbusJWTVersion = "10.3"
+val restdocsSpecMockMvcVersion = "0.18.2"
 
 java {
     toolchain {
@@ -37,10 +39,12 @@ dependencies {
     implementation("com.nimbusds:nimbus-jose-jwt:$nimbusJWTVersion")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
     runtimeOnly("com.h2database:h2")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("com.epages:restdocs-api-spec-mockmvc:$restdocsSpecMockMvcVersion")
+    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 }
 
 if (!rootProject.extra.has("install-git-hooks")) {
@@ -92,6 +96,21 @@ if (!rootProject.extra.has("install-git-hooks")) {
     project.rootProject.tasks.named("prepareKotlinBuildScriptModel") {
         dependsOn(preCommit, prePush)
     }
+}
+
+openapi3 {
+    setServer("http://localhost:8080")
+    title = "Pre Study"
+    version = "1.0.0"
+    description = "API Documents"
+    format = "yaml"
+}
+
+tasks.register<Copy>("copySwaggerSpec") {
+    description = "copy openapi3 document"
+    group = JavaBasePlugin.DOCUMENTATION_GROUP
+    from("build/api-spec/openapi3.yaml")
+    into("src/main/resources/static/docs/swagger-ui")
 }
 
 kotlin {
