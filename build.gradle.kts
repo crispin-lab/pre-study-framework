@@ -109,8 +109,24 @@ openapi3 {
 tasks.register<Copy>("copySwaggerSpec") {
     description = "copy openapi3 document"
     group = JavaBasePlugin.DOCUMENTATION_GROUP
-    from("build/api-spec/openapi3.yaml")
-    into("src/main/resources/static/docs/swagger-ui")
+
+    val inputFile: File = file("build/api-spec/openapi3.yaml")
+    val outputDir: File = file("src/main/resources/static/docs/swagger-ui")
+
+    inputs.file(inputFile)
+    outputs.dir(outputDir)
+
+    from(inputFile)
+    into(outputDir)
+}
+
+tasks.named("build") {
+    dependsOn("test")
+    finalizedBy("copySwaggerSpec")
+}
+
+tasks.named("test") {
+    finalizedBy("openapi3")
 }
 
 kotlin {
