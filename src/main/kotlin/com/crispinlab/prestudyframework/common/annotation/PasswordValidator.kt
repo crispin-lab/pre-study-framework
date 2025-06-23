@@ -9,6 +9,6 @@ class PasswordValidator : ConstraintValidator<Password, String> {
         context: ConstraintValidatorContext?
     ): Boolean {
         if (value.isNullOrBlank()) return false
-        return Regex("^[a-zA-Z0-9]{8,15}$").matches(value)
+        return Regex("^(?=.*[0-9])[a-zA-Z0-9]{8,15}$").matches(value)
     }
 }
