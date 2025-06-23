@@ -1,6 +1,8 @@
 package com.crispinlab.prestudyframework.adapter.user.input.web
 
+import com.crispinlab.prestudyframework.adapter.user.input.web.request.UserLoginRequest
 import com.crispinlab.prestudyframework.adapter.user.input.web.request.UserRegisterRequest
+import com.crispinlab.prestudyframework.fake.AuthHeaderFakeBuilder
 import com.crispinlab.prestudyframework.fake.UserFakeCommandUserCase
 import com.fasterxml.jackson.databind.ObjectMapper
 import kotlin.test.Test
@@ -16,7 +18,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
-@Import(UserFakeCommandUserCase::class)
+@Import(UserFakeCommandUserCase::class, AuthHeaderFakeBuilder::class)
 @WebMvcTest(UserCommandController::class)
 class UserCommandControllerTest {
     @Autowired
@@ -130,6 +132,44 @@ class UserCommandControllerTest {
                             .value("password"),
                         MockMvcResultMatchers.jsonPath("$.result.errors[0].value")
                             .value(request.password)
+                    )
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("로그인 요청 테스트")
+    inner class UserLoginAPITest() {
+        @Nested
+        @DisplayName("로그인 요청 성공 테스트")
+        inner class UserLoginAPISuccessTest() {
+            @Test
+            @DisplayName("로그인 요청을 할 수 있어야 한다.")
+            fun loginAPITest() {
+                // given
+                val request =
+                    UserLoginRequest(
+                        username = "test09",
+                        password = "abcDEF123"
+                    )
+
+                // when
+                val result: ResultActions =
+                    mockMvc
+                        .perform(
+                            MockMvcRequestBuilders
+                                .post("/api/users/login")
+                                .accept("application/vnd.pre-study.com-v1+json")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                        ).andDo(MockMvcResultHandlers.print())
+
+                // then
+                result
+                    .andExpectAll(
+                        MockMvcResultMatchers.status().isOk,
+                        MockMvcResultMatchers.jsonPath("$.code").value(200),
+                        MockMvcResultMatchers.jsonPath("$.message").value("success")
                     )
             }
         }
