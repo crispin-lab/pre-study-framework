@@ -61,5 +61,77 @@ class UserCommandControllerTest {
                     )
             }
         }
+
+        @Nested
+        @DisplayName("회원 가입 요청 실패 테스트")
+        inner class UserRegisterAPIFailTest() {
+            @Test
+            @DisplayName("잘못된 username로 회원가입 요청 시 요청에 실패해야 한다.")
+            fun registerAPITest() {
+                // given
+                val request =
+                    UserRegisterRequest(
+                        username = "wrongUsername",
+                        password = "abcDEF123"
+                    )
+
+                // when
+                val result: ResultActions =
+                    mockMvc
+                        .perform(
+                            MockMvcRequestBuilders
+                                .post("/api/users")
+                                .accept("application/vnd.pre-study.com-v1+json")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                        ).andDo(MockMvcResultHandlers.print())
+
+                // then
+                result
+                    .andExpectAll(
+                        MockMvcResultMatchers.status().isOk,
+                        MockMvcResultMatchers.jsonPath("$.code").value(101),
+                        MockMvcResultMatchers.jsonPath("$.message").value("invalid request value."),
+                        MockMvcResultMatchers.jsonPath("$.result.errors[0].field")
+                            .value("username"),
+                        MockMvcResultMatchers.jsonPath("$.result.errors[0].value")
+                            .value(request.username)
+                    )
+            }
+
+            @Test
+            @DisplayName("잘못된 password로 회원가입 요청 시 요청에 실패해야 한다.")
+            fun registerAPITest2() {
+                // given
+                val request =
+                    UserRegisterRequest(
+                        username = "test09",
+                        password = "wrongPassword"
+                    )
+
+                // when
+                val result: ResultActions =
+                    mockMvc
+                        .perform(
+                            MockMvcRequestBuilders
+                                .post("/api/users")
+                                .accept("application/vnd.pre-study.com-v1+json")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                        ).andDo(MockMvcResultHandlers.print())
+
+                // then
+                result
+                    .andExpectAll(
+                        MockMvcResultMatchers.status().isOk,
+                        MockMvcResultMatchers.jsonPath("$.code").value(101),
+                        MockMvcResultMatchers.jsonPath("$.message").value("invalid request value."),
+                        MockMvcResultMatchers.jsonPath("$.result.errors[0].field")
+                            .value("password"),
+                        MockMvcResultMatchers.jsonPath("$.result.errors[0].value")
+                            .value(request.password)
+                    )
+            }
+        }
     }
 }
