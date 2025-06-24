@@ -1,7 +1,19 @@
 package com.crispinlab.prestudyframework.adapter.article.output
 
 import com.crispinlab.prestudyframework.application.article.port.ArticleQueryPort
+import com.crispinlab.prestudyframework.domain.article.Article
 import org.springframework.stereotype.Component
 
 @Component
-class ArticlePersistenceAdaptor : ArticleQueryPort
+internal class ArticlePersistenceAdaptor : ArticleQueryPort {
+    override fun count(pageLimit: Int): Int {
+        TODO("Not yet implemented")
+    }
+
+    override fun retrieveAll(
+        limit: Int,
+        offset: Int
+    ): List<Article> {
+        TODO("Not yet implemented")
+    }
+}
