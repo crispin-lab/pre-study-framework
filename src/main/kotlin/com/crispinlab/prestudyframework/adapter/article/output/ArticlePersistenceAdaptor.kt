@@ -11,8 +11,8 @@ internal class ArticlePersistenceAdaptor : ArticleQueryPort {
     }
 
     override fun retrieveAll(
-        limit: Int,
-        offset: Int
+        page: Int,
+        pageSize: Int
     ): List<Article> {
         TODO("Not yet implemented")
     }
