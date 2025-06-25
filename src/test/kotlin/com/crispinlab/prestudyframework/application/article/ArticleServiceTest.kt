@@ -1,6 +1,7 @@
 package com.crispinlab.prestudyframework.application.article
 
 import com.crispinlab.prestudyframework.fake.ArticleFakePort
+import com.crispinlab.prestudyframework.fake.UserFakePort
 import kotlin.test.Test
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -10,11 +11,19 @@ import org.junit.jupiter.api.Nested
 class ArticleServiceTest {
     private lateinit var articleService: ArticleService
     private lateinit var articleFakePort: ArticleFakePort
+    private lateinit var userFakePort: UserFakePort
 
     @BeforeEach
     fun setUp() {
         articleFakePort = ArticleFakePort()
-        articleService = ArticleService(articleFakePort)
+        userFakePort = UserFakePort()
+        articleService =
+            ArticleService(
+                articleQueryPort = articleFakePort,
+                userQueryPort = userFakePort
+            )
+        articleFakePort.clear()
+        userFakePort.clear()
     }
 
     @Nested
@@ -33,6 +42,7 @@ class ArticleServiceTest {
                         pageSize = 10
                     )
 
+                userFakePort.singleUserFixture()
                 articleFakePort.singleArticleFixture()
 
                 // when
@@ -41,7 +51,7 @@ class ArticleServiceTest {
 
                 // then
                 Assertions.assertThat(actual).isNotNull
-                Assertions.assertThat(actual.articles.size).isZero
+                Assertions.assertThat(actual.articles.size).isNotZero
             }
         }
     }
