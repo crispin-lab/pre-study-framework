@@ -17,9 +17,13 @@ internal class ArticleFakePort : ArticleQueryPort {
             )
     }
 
+    fun clear() {
+        storage.clear()
+    }
+
     override fun count(pageLimit: Int): Int = storage.values.take(pageLimit).count()
 
-    override fun retrieveAll(
+    override fun findAllBy(
         page: Int,
         pageSize: Int
     ): List<Article> {
