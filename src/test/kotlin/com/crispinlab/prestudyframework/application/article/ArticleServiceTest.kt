@@ -1,9 +1,11 @@
 package com.crispinlab.prestudyframework.application.article
 
 import com.crispinlab.prestudyframework.fake.ArticleFakePort
+import com.crispinlab.prestudyframework.fake.PasswordFakeHelper
 import com.crispinlab.prestudyframework.fake.UserFakePort
 import kotlin.test.Test
 import org.assertj.core.api.Assertions
+import org.assertj.core.api.SoftAssertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -11,16 +13,20 @@ import org.junit.jupiter.api.Nested
 class ArticleServiceTest {
     private lateinit var articleService: ArticleService
     private lateinit var articleFakePort: ArticleFakePort
+    private lateinit var passwordFakeHelper: PasswordFakeHelper
     private lateinit var userFakePort: UserFakePort
 
     @BeforeEach
     fun setUp() {
         articleFakePort = ArticleFakePort()
         userFakePort = UserFakePort()
+        passwordFakeHelper = PasswordFakeHelper()
         articleService =
             ArticleService(
                 articleQueryPort = articleFakePort,
-                userQueryPort = userFakePort
+                userQueryPort = userFakePort,
+                articleCommandPort = articleFakePort,
+                passwordHelper = passwordFakeHelper
             )
         articleFakePort.clear()
         userFakePort.clear()
@@ -52,6 +58,39 @@ class ArticleServiceTest {
                 // then
                 Assertions.assertThat(actual).isNotNull
                 Assertions.assertThat(actual.articles.size).isNotZero
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("게시글 작성 테스트")
+    inner class WriteArticleTest() {
+        @Nested
+        @DisplayName("게시글 작성 성공 테스트")
+        inner class WriteArticleTest() {
+            @Test
+            @DisplayName("게시글을 작성 할 수 있어야 한다.")
+            fun writeTest() {
+                // given
+                val request =
+                    ArticleCommandUseCase.WriteArticleRequest(
+                        title = "테스트 게시글",
+                        content = "테스트",
+                        author = 1L,
+                        password = "abcDEF123"
+                    )
+
+                userFakePort.singleUserFixture()
+
+                // when
+                val actual: ArticleCommandUseCase.WriteArticleResponse =
+                    articleService.writeArticle(request)
+
+                // then
+                SoftAssertions.assertSoftly { softAssertions ->
+                    softAssertions.assertThat(actual.code).isEqualTo(200)
+                    softAssertions.assertThat(actual.message).isEqualTo("success")
+                }
             }
         }
     }

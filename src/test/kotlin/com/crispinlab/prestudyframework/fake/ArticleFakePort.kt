@@ -1,9 +1,10 @@
 package com.crispinlab.prestudyframework.fake
 
+import com.crispinlab.prestudyframework.application.article.port.ArticleCommandPort
 import com.crispinlab.prestudyframework.application.article.port.ArticleQueryPort
 import com.crispinlab.prestudyframework.domain.article.Article
 
-internal class ArticleFakePort : ArticleQueryPort {
+internal class ArticleFakePort : ArticleQueryPort, ArticleCommandPort {
     private val storage: MutableMap<Long, Article> = mutableMapOf()
 
     fun singleArticleFixture() {
@@ -34,5 +35,10 @@ internal class ArticleFakePort : ArticleQueryPort {
             .drop(offset)
             .take(pageSize)
             .toList()
+    }
+
+    override fun save(article: Article): Long {
+        storage[article.id] = article
+        return article.id
     }
 }
