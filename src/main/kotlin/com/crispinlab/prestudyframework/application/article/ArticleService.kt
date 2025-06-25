@@ -21,32 +21,33 @@ internal class ArticleService(
 
     override fun retrieveArticles(
         params: ArticleQueryUseCase.RetrieveArticlesParams
-    ): ArticleQueryUseCase.RetrieveArticlesResponse {
-        val pageLimit: Int =
-            PageLimitCalculator.calculatePageLimit(
-                page = params.page,
-                pageSize = params.pageSize
+    ): ArticleQueryUseCase.RetrieveArticlesResponse =
+        Log.logging(logger) {
+            val pageLimit: Int =
+                PageLimitCalculator.calculatePageLimit(
+                    page = params.page,
+                    pageSize = params.pageSize
+                )
+            val count: Int = articleQueryPort.count(pageLimit)
+
+            val articles: List<Article> =
+                articleQueryPort.findAllBy(
+                    page = params.page,
+                    pageSize = params.pageSize
+                )
+
+            val authorIds: Set<Long> = articles.map { it.author }.toSet()
+
+            val usernames: Map<Long, String> =
+                userQueryPort
+                    .findAllBy(authorIds)
+                    .associate { it.id to it.username }
+
+            return@logging ArticleQueryUseCase.RetrieveArticlesResponse(
+                articles = articles.map { it.toDto(usernames) },
+                count = count
             )
-        val count: Int = articleQueryPort.count(pageLimit)
-
-        val articles: List<Article> =
-            articleQueryPort.findAllBy(
-                page = params.page,
-                pageSize = params.pageSize
-            )
-
-        val authorIds: Set<Long> = articles.map { it.author }.toSet()
-
-        val usernames: Map<Long, String> =
-            userQueryPort
-                .findAllBy(authorIds)
-                .associate { it.id to it.username }
-
-        return ArticleQueryUseCase.RetrieveArticlesResponse(
-            articles = articles.map { it.toDto(usernames) },
-            count = count
-        )
-    }
+        }
 
     override fun writeArticle(request: ArticleCommandUseCase.WriteArticleRequest) =
         Log.logging(logger) { log ->
