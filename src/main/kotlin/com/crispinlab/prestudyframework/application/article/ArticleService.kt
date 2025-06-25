@@ -7,6 +7,7 @@ import com.crispinlab.prestudyframework.application.user.port.UserQueryPort
 import com.crispinlab.prestudyframework.common.util.Log
 import com.crispinlab.prestudyframework.common.util.PageLimitCalculator
 import com.crispinlab.prestudyframework.domain.article.Article
+import com.crispinlab.prestudyframework.domain.user.User
 import org.slf4j.Logger
 import org.springframework.stereotype.Service
 
@@ -47,6 +48,36 @@ internal class ArticleService(
             return@logging ArticleQueryUseCase.RetrieveArticlesResponse(
                 articles = articles.map { it.toDto(usernames) },
                 count = count
+            )
+        }
+
+    override fun retrieveArticle(
+        id: Long
+    ): ArticleQueryUseCase.Response<ArticleQueryUseCase.RetrieveArticleResponse> =
+        Log.logging(logger) { log ->
+            log["method"] = "retrieveArticle()"
+
+            val foundArticle: Article =
+                articleQueryPort.findBy(id) ?: run {
+                    log["retrieveFail"] = "author id: $id"
+                    return@logging ArticleQueryUseCase.Response.fail("invalid article")
+                }
+
+            val foundAuthor: User =
+                userQueryPort.findBy(foundArticle.author) ?: run {
+                    log["writeFail"] = "author id: ${foundArticle.author}"
+                    return@logging ArticleQueryUseCase.Response.fail("invalid author")
+                }
+
+            return@logging ArticleQueryUseCase.Response.success(
+                ArticleQueryUseCase.RetrieveArticleResponse(
+                    id = foundArticle.id,
+                    title = foundArticle.title,
+                    content = foundArticle.content,
+                    author = foundAuthor.username,
+                    createdAt = foundArticle.createdAt,
+                    updatedAt = foundArticle.updatedAt
+                )
             )
         }
 
