@@ -37,6 +37,8 @@ internal class ArticleFakePort : ArticleQueryPort, ArticleCommandPort {
             .toList()
     }
 
+    override fun findBy(id: Long): Article? = storage[id]
+
     override fun save(article: Article): Long {
         storage[article.id] = article
         return article.id

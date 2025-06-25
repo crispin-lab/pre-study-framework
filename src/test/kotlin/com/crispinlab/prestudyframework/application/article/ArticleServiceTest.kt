@@ -121,4 +121,33 @@ class ArticleServiceTest {
             }
         }
     }
+
+    @Nested
+    @DisplayName("게시글 상세 조회 테스트")
+    inner class RetrieveArticleTest() {
+        @Nested
+        @DisplayName("게시글 싱세 조회 성공 테스트")
+        inner class RetrieveArticleSuccessTest() {
+            @Test
+            @DisplayName("게시글을 상세 조회 할 수 있어야 한다.")
+            fun retrieveTest() {
+                // given
+                val articleId = 1L
+
+                articleFakePort.singleArticleFixture()
+                userFakePort.singleUserFixture()
+
+                // when
+                val actual:
+                    ArticleQueryUseCase.Response<ArticleQueryUseCase.RetrieveArticleResponse> =
+                    articleService.retrieveArticle(articleId)
+
+                // then
+                SoftAssertions.assertSoftly { softAssertions ->
+                    softAssertions.assertThat(actual.code).isEqualTo(200)
+                    softAssertions.assertThat(actual.message).isEqualTo("success")
+                }
+            }
+        }
+    }
 }
