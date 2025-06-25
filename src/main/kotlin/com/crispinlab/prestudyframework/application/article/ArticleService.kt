@@ -1,13 +1,15 @@
 package com.crispinlab.prestudyframework.application.article
 
 import com.crispinlab.prestudyframework.application.article.port.ArticleQueryPort
+import com.crispinlab.prestudyframework.application.user.port.UserQueryPort
 import com.crispinlab.prestudyframework.common.util.PageLimitCalculator
 import com.crispinlab.prestudyframework.domain.article.Article
 import org.springframework.stereotype.Service
 
 @Service
 internal class ArticleService(
-    private val articleQueryPort: ArticleQueryPort
+    private val articleQueryPort: ArticleQueryPort,
+    private val userQueryPort: UserQueryPort
 ) : ArticleQueryUseCase {
     override fun retrieveArticles(
         params: ArticleQueryUseCase.RetrieveArticlesParams
@@ -25,15 +27,15 @@ internal class ArticleService(
                 pageSize = params.pageSize
             )
 
-        /*
-        todo    :: user id 리스트로 username 조회 기능 추가
-         author :: heechoel shin
-         date   :: 2025-06-24T23:34:24KST
-         */
-        articles.map { it.author }.toSet()
+        val authorIds: Set<Long> = articles.map { it.author }.toSet()
+
+        val usernames: Map<Long, String> =
+            userQueryPort
+                .findAllBy(authorIds)
+                .associate { it.id to it.username }
 
         return ArticleQueryUseCase.RetrieveArticlesResponse(
-            articles = emptyList(),
+            articles = articles.map { it.toDto(usernames) },
             count = count
         )
     }
