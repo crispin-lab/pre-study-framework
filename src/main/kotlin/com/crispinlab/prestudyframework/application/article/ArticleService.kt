@@ -22,7 +22,8 @@ internal class ArticleService(
     override fun retrieveArticles(
         params: ArticleQueryUseCase.RetrieveArticlesParams
     ): ArticleQueryUseCase.RetrieveArticlesResponse =
-        Log.logging(logger) {
+        Log.logging(logger) { log ->
+            log["method"] = "retrieveArticles()"
             val pageLimit: Int =
                 PageLimitCalculator.calculatePageLimit(
                     page = params.page,
@@ -51,6 +52,7 @@ internal class ArticleService(
 
     override fun writeArticle(request: ArticleCommandUseCase.WriteArticleRequest) =
         Log.logging(logger) { log ->
+            log["method"] = "writeArticle()"
             val article =
                 Article(
                     title = request.title,

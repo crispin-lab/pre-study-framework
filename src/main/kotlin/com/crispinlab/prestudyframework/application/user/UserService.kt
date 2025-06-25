@@ -20,6 +20,7 @@ internal class UserService(
         request: UserCommandUseCase.RegisterRequest
     ): UserCommandUseCase.RegisterResponse =
         Log.logging(logger) { log ->
+            log["method"] = "registerUser()"
             if (userQueryPort.existBy(request.username)) {
                 log["registerFail"] = "duplicate username: ${request.username}"
                 return@logging UserCommandUseCase.RegisterResponse.fail("duplicate username")
@@ -39,6 +40,7 @@ internal class UserService(
         request: UserCommandUseCase.LoginRequest
     ): UserCommandUseCase.LoginResponse =
         Log.logging(logger) { log ->
+            log["method"] = "loginUser()"
             val foundUser: User =
                 userQueryPort.findBy(request.username) ?: run {
                     log["loginFail"] = "unregistered user: ${request.username}"
