@@ -67,7 +67,7 @@ class ArticleServiceTest {
     inner class WriteArticleTest() {
         @Nested
         @DisplayName("게시글 작성 성공 테스트")
-        inner class WriteArticleTest() {
+        inner class WriteArticleSuccessTest() {
             @Test
             @DisplayName("게시글을 작성 할 수 있어야 한다.")
             fun writeTest() {
@@ -90,6 +90,33 @@ class ArticleServiceTest {
                 SoftAssertions.assertSoftly { softAssertions ->
                     softAssertions.assertThat(actual.code).isEqualTo(200)
                     softAssertions.assertThat(actual.message).isEqualTo("success")
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("게시글 작성 실패 테스트")
+        inner class WriteArticleFailTest() {
+            @Test
+            @DisplayName("존재 하지 않는 사용자 아이디로 게시글 작성 시 작성에 실패해야 한다.")
+            fun writeTest() {
+                // given
+                val request =
+                    ArticleCommandUseCase.WriteArticleRequest(
+                        title = "테스트 게시글",
+                        content = "테스트",
+                        author = 1L,
+                        password = "abcDEF123"
+                    )
+
+                // when
+                val actual: ArticleCommandUseCase.WriteArticleResponse =
+                    articleService.writeArticle(request)
+
+                // then
+                SoftAssertions.assertSoftly { softAssertions ->
+                    softAssertions.assertThat(actual.code).isEqualTo(300)
+                    softAssertions.assertThat(actual.message).isEqualTo("invalid author")
                 }
             }
         }
