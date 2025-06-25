@@ -1,6 +1,7 @@
 package com.crispinlab.prestudyframework.adapter.user.output.repository
 
 import com.crispinlab.prestudyframework.adapter.user.output.entity.UserEntity
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -13,6 +14,8 @@ internal class UserRepositoryImpl(
     }
 
     override fun findBy(username: String): UserEntity? = userJpaRepository.findByUsername(username)
+
+    override fun findBy(id: Long): UserEntity? = userJpaRepository.findByIdOrNull(id)
 
     override fun existBy(username: String): Boolean = userJpaRepository.existsByUsername(username)
 

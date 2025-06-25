@@ -7,5 +7,7 @@ interface UserQueryPort {
 
     fun findBy(username: String): User?
 
+    fun findBy(id: Long): User?
+
     fun findAllBy(ids: Collection<Long>): List<User>
 }

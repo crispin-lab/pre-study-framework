@@ -22,6 +22,10 @@ class UserFakePort : UserCommandPort, UserQueryPort {
 
     override fun findBy(username: String): User? = storage.values.find { it.username == username }
 
+    override fun findBy(id: Long): User? {
+        return storage[id]
+    }
+
     override fun findAllBy(ids: Collection<Long>): List<User> {
         return storage.values.filter { it.id in ids }
     }

@@ -31,6 +31,16 @@ internal class UserPersistenceAdapter(
         }
     }
 
+    override fun findBy(id: Long): User? {
+        return userRepository.findBy(id)?.let {
+            User(
+                id = it.id,
+                username = it.username,
+                password = it.password
+            )
+        }
+    }
+
     override fun findAllBy(ids: Collection<Long>): List<User> =
         userRepository.findAllBy(ids).map { it.toDomain() }
 }
