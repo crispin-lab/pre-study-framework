@@ -10,7 +10,7 @@ internal class ArticlePersistenceAdaptor : ArticleQueryPort {
         TODO("Not yet implemented")
     }
 
-    override fun retrieveAll(
+    override fun findAllBy(
         page: Int,
         pageSize: Int
     ): List<Article> {

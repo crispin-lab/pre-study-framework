@@ -22,7 +22,7 @@ internal class ArticleService(
         val count: Int = articleQueryPort.count(pageLimit)
 
         val articles: List<Article> =
-            articleQueryPort.retrieveAll(
+            articleQueryPort.findAllBy(
                 page = params.page,
                 pageSize = params.pageSize
             )
