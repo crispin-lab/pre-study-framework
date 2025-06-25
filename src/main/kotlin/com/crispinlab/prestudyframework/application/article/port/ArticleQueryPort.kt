@@ -9,4 +9,6 @@ internal interface ArticleQueryPort {
         page: Int,
         pageSize: Int
     ): List<Article>
+
+    fun findBy(id: Long): Article?
 }

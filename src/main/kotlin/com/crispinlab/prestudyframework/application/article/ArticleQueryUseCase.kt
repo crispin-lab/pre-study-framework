@@ -2,7 +2,23 @@ package com.crispinlab.prestudyframework.application.article
 
 import java.time.Instant
 
-interface ArticleQueryUseCase {
+internal interface ArticleQueryUseCase {
+    class Response<T> private constructor(
+        val code: Int,
+        val message: String,
+        val data: T? = null
+    ) {
+        companion object {
+            fun <T> success(data: T): Response<T> {
+                return Response(code = 200, message = "success", data = data)
+            }
+
+            fun <T> fail(message: String): Response<T> {
+                return Response(code = 400, message = message, data = null)
+            }
+        }
+    }
+
     data class RetrieveArticlesParams(
         val page: Int,
         val pageSize: Int
@@ -23,4 +39,6 @@ interface ArticleQueryUseCase {
     )
 
     fun retrieveArticles(params: RetrieveArticlesParams): RetrieveArticlesResponse
+
+    fun retrieveArticle(id: Long): Response<RetrieveArticleResponse>
 }
