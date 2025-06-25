@@ -21,13 +21,14 @@ internal class UserPersistenceAdapter(
 
     override fun existBy(username: String): Boolean = userRepository.existBy(username)
 
-    override fun findBy(username: String): User {
-        val foundUserEntity: UserEntity = userRepository.findBy(username)
-        return User(
-            id = foundUserEntity.id,
-            username = foundUserEntity.username,
-            password = foundUserEntity.password
-        )
+    override fun findBy(username: String): User? {
+        return userRepository.findBy(username)?.let {
+            User(
+                id = it.id,
+                username = it.username,
+                password = it.password
+            )
+        }
     }
 
     override fun findAllBy(ids: Collection<Long>): List<User> =

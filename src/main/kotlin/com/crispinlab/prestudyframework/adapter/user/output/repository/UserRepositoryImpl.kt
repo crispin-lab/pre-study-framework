@@ -12,7 +12,7 @@ internal class UserRepositoryImpl(
         return savedUserEntity.id
     }
 
-    override fun findBy(username: String): UserEntity = userJpaRepository.findByUsername(username)
+    override fun findBy(username: String): UserEntity? = userJpaRepository.findByUsername(username)
 
     override fun existBy(username: String): Boolean = userJpaRepository.existsByUsername(username)
 
