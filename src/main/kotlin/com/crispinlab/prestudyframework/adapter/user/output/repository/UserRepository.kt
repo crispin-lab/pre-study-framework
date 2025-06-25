@@ -8,4 +8,6 @@ internal interface UserRepository {
     fun findBy(username: String): UserEntity
 
     fun existBy(username: String): Boolean
+
+    fun findAllBy(ids: Collection<Long>): List<UserEntity>
 }

@@ -15,4 +15,7 @@ internal class UserRepositoryImpl(
     override fun findBy(username: String): UserEntity = userJpaRepository.findByUsername(username)
 
     override fun existBy(username: String): Boolean = userJpaRepository.existsByUsername(username)
+
+    override fun findAllBy(ids: Collection<Long>): List<UserEntity> =
+        userJpaRepository.findAllById(ids)
 }

@@ -6,4 +6,6 @@ interface UserQueryPort {
     fun existBy(username: String): Boolean
 
     fun findBy(username: String): User?
+
+    fun findAllBy(ids: Collection<Long>): List<User>
 }

@@ -29,4 +29,7 @@ internal class UserPersistenceAdapter(
             password = foundUserEntity.password
         )
     }
+
+    override fun findAllBy(ids: Collection<Long>): List<User> =
+        userRepository.findAllBy(ids).map { it.toDomain() }
 }
