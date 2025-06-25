@@ -18,6 +18,10 @@ internal class ArticlePersistenceAdaptor : ArticleQueryPort, ArticleCommandPort 
         TODO("Not yet implemented")
     }
 
+    override fun findBy(id: Long): Article? {
+        TODO("Not yet implemented")
+    }
+
     override fun save(article: Article): Long {
         TODO("Not yet implemented")
     }
