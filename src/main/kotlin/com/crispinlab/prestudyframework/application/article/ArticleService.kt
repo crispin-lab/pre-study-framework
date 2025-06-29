@@ -105,19 +105,9 @@ internal class ArticleService(
     override fun updateArticle(request: ArticleCommandUseCase.UpdateArticleRequest) =
         Log.logging(logger) { log ->
             log["method"] = "updateArticle()"
-            val foundUser: User =
-                userQueryPort.findBy(request.username) ?: run {
-                    log["updateFail"] = "username: ${request.username}"
-                    return@logging ArticleCommandUseCase.Response.fail("invalid user")
-                }
 
-            if (!passwordHelper.matches(
-                    rawPassword = request.password,
-                    encodedPassword = foundUser.password
-                )
-            ) {
-                log["updateFail"] = "username: ${request.username}"
-                return@logging ArticleCommandUseCase.Response.fail("invalid password")
+            if (!isAuthenticated(username = request.username, password = request.password, log)) {
+                return@logging ArticleCommandUseCase.Response.fail("authenticate fail")
             }
 
             val foundArticle: Article =
@@ -137,15 +127,38 @@ internal class ArticleService(
             return@logging ArticleCommandUseCase.Response.success()
         }
 
-    override fun deleteArticle(id: Long) =
+    override fun deleteArticle(request: ArticleCommandUseCase.DeleteArticleRequest) =
         Log.logging(logger) { log ->
             log["method"] = "deleteArticle()"
-            articleQueryPort.findBy(id) ?: run {
-                log["updateFail"] = "article id: $id"
+
+            if (!isAuthenticated(username = request.username, password = request.password, log)) {
+                return@logging ArticleCommandUseCase.Response.fail("authenticate fail")
+            }
+
+            articleQueryPort.findBy(request.id) ?: run {
+                log["updateFail"] = "article id: ${request.id}"
                 return@logging ArticleCommandUseCase.Response.fail("invalid article")
             }
 
-            articleCommandPort.delete(id)
+            articleCommandPort.delete(request.id)
             return@logging ArticleCommandUseCase.Response.success()
         }
+
+    private fun isAuthenticated(
+        username: String,
+        password: String,
+        log: MutableMap<String, Any>
+    ): Boolean {
+        val user: User? = userQueryPort.findBy(username)
+        if (user == null) {
+            log["authFail"] = "username: $username"
+            return false
+        }
+
+        if (!passwordHelper.matches(rawPassword = password, encodedPassword = user.password)) {
+            log["authFail"] = "username: $username"
+            return false
+        }
+        return true
+    }
 }

@@ -31,9 +31,15 @@ internal interface ArticleCommandUseCase {
         val password: String
     )
 
+    data class DeleteArticleRequest(
+        val id: Long,
+        val username: String,
+        val password: String
+    )
+
     fun writeArticle(request: WriteArticleRequest): Response
 
     fun updateArticle(request: UpdateArticleRequest): Response
 
-    fun deleteArticle(id: Long): Response
+    fun deleteArticle(request: DeleteArticleRequest): Response
 }
