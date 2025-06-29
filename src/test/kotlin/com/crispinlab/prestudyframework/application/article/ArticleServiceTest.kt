@@ -237,7 +237,7 @@ class ArticleServiceTest {
                 // then
                 SoftAssertions.assertSoftly { softAssertions ->
                     softAssertions.assertThat(actual.code).isEqualTo(400)
-                    softAssertions.assertThat(actual.message).isEqualTo("invalid user")
+                    softAssertions.assertThat(actual.message).isEqualTo("authenticate fail")
                 }
             }
 
@@ -264,7 +264,7 @@ class ArticleServiceTest {
                 // then
                 SoftAssertions.assertSoftly { softAssertions ->
                     softAssertions.assertThat(actual.code).isEqualTo(400)
-                    softAssertions.assertThat(actual.message).isEqualTo("invalid password")
+                    softAssertions.assertThat(actual.message).isEqualTo("authenticate fail")
                 }
             }
         }
@@ -280,13 +280,18 @@ class ArticleServiceTest {
             @DisplayName("게시글을 삭제할 수 있어야 한다.")
             fun deleteTest() {
                 // given
-                val articleId = 1L
+                val request =
+                    ArticleCommandUseCase.DeleteArticleRequest(
+                        id = 1L,
+                        username = "testUser09",
+                        password = "abcDEF09"
+                    )
 
                 articleFakePort.singleArticleFixture()
                 userFakePort.singleUserFixture()
 
                 // when
-                val actual: ArticleCommandUseCase.Response = articleService.deleteArticle(articleId)
+                val actual: ArticleCommandUseCase.Response = articleService.deleteArticle(request)
 
                 // then
                 SoftAssertions.assertSoftly { softAssertions ->
@@ -303,15 +308,70 @@ class ArticleServiceTest {
             @DisplayName("요청 ID 에 해당하는 게시글이 존재하지 않는 경우 삭제가 실패해야 한다.")
             fun deleteTest() {
                 // given
-                val articleId = 1L
+                val request =
+                    ArticleCommandUseCase.DeleteArticleRequest(
+                        id = 1L,
+                        username = "testUser09",
+                        password = "abcDEF09"
+                    )
+
+                userFakePort.singleUserFixture()
 
                 // when
-                val actual: ArticleCommandUseCase.Response = articleService.deleteArticle(articleId)
+                val actual: ArticleCommandUseCase.Response = articleService.deleteArticle(request)
 
                 // then
                 SoftAssertions.assertSoftly { softAssertions ->
                     softAssertions.assertThat(actual.code).isEqualTo(400)
                     softAssertions.assertThat(actual.message).isEqualTo("invalid article")
+                }
+            }
+
+            @Test
+            @DisplayName("요청한 username 이 존재하지 않는 경우 삭제에 실패해야 한다.")
+            fun deleteTest2() {
+                // given
+                val request =
+                    ArticleCommandUseCase.DeleteArticleRequest(
+                        id = 1L,
+                        username = "wrongUsername",
+                        password = "abcDEF09"
+                    )
+
+                articleFakePort.singleArticleFixture()
+                userFakePort.singleUserFixture()
+
+                // when
+                val actual: ArticleCommandUseCase.Response = articleService.deleteArticle(request)
+
+                // then
+                SoftAssertions.assertSoftly { softAssertions ->
+                    softAssertions.assertThat(actual.code).isEqualTo(400)
+                    softAssertions.assertThat(actual.message).isEqualTo("authenticate fail")
+                }
+            }
+
+            @Test
+            @DisplayName("요청한 password 가 잘못된 경우 업데이트가 실패해야 한다.")
+            fun deleteTest3() {
+                // given
+                val request =
+                    ArticleCommandUseCase.DeleteArticleRequest(
+                        id = 1L,
+                        username = "testUser09",
+                        password = "wrongPassword"
+                    )
+
+                articleFakePort.singleArticleFixture()
+                userFakePort.singleUserFixture()
+
+                // when
+                val actual: ArticleCommandUseCase.Response = articleService.deleteArticle(request)
+
+                // then
+                SoftAssertions.assertSoftly { softAssertions ->
+                    softAssertions.assertThat(actual.code).isEqualTo(400)
+                    softAssertions.assertThat(actual.message).isEqualTo("authenticate fail")
                 }
             }
         }

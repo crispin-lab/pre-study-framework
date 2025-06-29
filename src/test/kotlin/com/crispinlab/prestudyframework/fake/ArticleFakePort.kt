@@ -43,4 +43,8 @@ internal class ArticleFakePort : ArticleQueryPort, ArticleCommandPort {
         storage[article.id] = article
         return article.id
     }
+
+    override fun delete(id: Long) {
+        storage.remove(id)
+    }
 }
