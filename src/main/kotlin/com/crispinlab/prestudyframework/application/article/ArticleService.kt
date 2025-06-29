@@ -105,6 +105,21 @@ internal class ArticleService(
     override fun updateArticle(request: ArticleCommandUseCase.UpdateArticleRequest) =
         Log.logging(logger) { log ->
             log["method"] = "updateArticle()"
+            val foundUser: User =
+                userQueryPort.findBy(request.username) ?: run {
+                    log["updateFail"] = "username: ${request.username}"
+                    return@logging ArticleCommandUseCase.Response.fail("invalid user")
+                }
+
+            if (!passwordHelper.matches(
+                    rawPassword = request.password,
+                    encodedPassword = foundUser.password
+                )
+            ) {
+                log["updateFail"] = "username: ${request.username}"
+                return@logging ArticleCommandUseCase.Response.fail("invalid password")
+            }
+
             val foundArticle: Article =
                 articleQueryPort.findBy(request.id) ?: run {
                     log["updateFail"] = "article id: ${request.id}"

@@ -26,7 +26,9 @@ internal interface ArticleCommandUseCase {
     data class UpdateArticleRequest(
         val id: Long,
         val title: String,
-        val content: String
+        val content: String,
+        val username: String,
+        val password: String
     )
 
     fun writeArticle(request: WriteArticleRequest): Response
