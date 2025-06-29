@@ -1,6 +1,6 @@
 package com.crispinlab.prestudyframework.adapter.article.output.repository
 
-import com.crispinlab.prestudyframework.domain.article.Article
+import com.crispinlab.prestudyframework.adapter.article.output.entity.ArticleEntity
 
 internal interface ArticleRepository {
     fun count(pageLimit: Int): Int
@@ -8,11 +8,11 @@ internal interface ArticleRepository {
     fun findAllBy(
         page: Int,
         pageSize: Int
-    ): List<Article>
+    ): List<ArticleEntity>
 
-    fun findBy(id: Long): Article?
+    fun findBy(id: Long): ArticleEntity?
 
-    fun save(article: Article): Long
+    fun save(article: ArticleEntity): Long
 
     fun delete(id: Long)
 }

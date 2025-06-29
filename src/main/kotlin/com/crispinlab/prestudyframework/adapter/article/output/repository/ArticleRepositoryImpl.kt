@@ -1,6 +1,6 @@
 package com.crispinlab.prestudyframework.adapter.article.output.repository
 
-import com.crispinlab.prestudyframework.domain.article.Article
+import com.crispinlab.prestudyframework.adapter.article.output.entity.ArticleEntity
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -12,15 +12,15 @@ internal class ArticleRepositoryImpl(
     override fun findAllBy(
         page: Int,
         pageSize: Int
-    ): List<Article> {
+    ): List<ArticleEntity> {
         TODO("Not yet implemented")
     }
 
-    override fun findBy(id: Long): Article? {
+    override fun findBy(id: Long): ArticleEntity? {
         TODO("Not yet implemented")
     }
 
-    override fun save(article: Article): Long {
+    override fun save(article: ArticleEntity): Long {
         TODO("Not yet implemented")
     }
 
