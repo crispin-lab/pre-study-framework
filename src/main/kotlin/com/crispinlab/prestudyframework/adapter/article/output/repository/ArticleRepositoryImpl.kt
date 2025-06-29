@@ -10,8 +10,8 @@ internal class ArticleRepositoryImpl(
     override fun count(pageLimit: Int): Int = articleJpaRepository.count(pageLimit)
 
     override fun findAllBy(
-        page: Int,
-        pageSize: Int
+        offset: Int,
+        limit: Int
     ): List<ArticleEntity> {
         TODO("Not yet implemented")
     }

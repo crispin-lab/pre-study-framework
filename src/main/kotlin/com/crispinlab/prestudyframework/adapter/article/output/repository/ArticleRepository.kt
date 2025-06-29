@@ -6,8 +6,8 @@ internal interface ArticleRepository {
     fun count(pageLimit: Int): Int
 
     fun findAllBy(
-        page: Int,
-        pageSize: Int
+        offset: Int,
+        limit: Int
     ): List<ArticleEntity>
 
     fun findBy(id: Long): ArticleEntity?
