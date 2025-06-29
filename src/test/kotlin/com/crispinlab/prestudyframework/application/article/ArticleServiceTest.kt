@@ -52,12 +52,13 @@ class ArticleServiceTest {
                 articleFakePort.singleArticleFixture()
 
                 // when
-                val actual: ArticleQueryUseCase.RetrieveArticlesResponse =
+                val actual:
+                    ArticleQueryUseCase.Response<ArticleQueryUseCase.RetrieveArticlesResponse> =
                     articleService.retrieveArticles(params)
 
                 // then
                 Assertions.assertThat(actual).isNotNull
-                Assertions.assertThat(actual.articles.size).isNotZero
+                Assertions.assertThat(actual.data!!.articles.size).isNotZero
             }
         }
     }
