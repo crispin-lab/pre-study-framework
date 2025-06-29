@@ -25,4 +25,8 @@ internal class ArticlePersistenceAdaptor : ArticleQueryPort, ArticleCommandPort 
     override fun save(article: Article): Long {
         TODO("Not yet implemented")
     }
+
+    override fun delete(id: Long) {
+        TODO("Not yet implemented")
+    }
 }

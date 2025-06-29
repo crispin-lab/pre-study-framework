@@ -121,4 +121,16 @@ internal class ArticleService(
 
             return@logging ArticleCommandUseCase.Response.success()
         }
+
+    override fun deleteArticle(id: Long) =
+        Log.logging(logger) { log ->
+            log["method"] = "deleteArticle()"
+            articleQueryPort.findBy(id) ?: run {
+                log["updateFail"] = "article id: $id"
+                return@logging ArticleCommandUseCase.Response.fail("invalid article")
+            }
+
+            articleCommandPort.delete(id)
+            return@logging ArticleCommandUseCase.Response.success()
+        }
 }

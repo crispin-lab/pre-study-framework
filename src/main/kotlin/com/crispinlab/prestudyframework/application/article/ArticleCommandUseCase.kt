@@ -32,4 +32,6 @@ internal interface ArticleCommandUseCase {
     fun writeArticle(request: WriteArticleRequest): Response
 
     fun updateArticle(request: UpdateArticleRequest): Response
+
+    fun deleteArticle(id: Long): Response
 }
