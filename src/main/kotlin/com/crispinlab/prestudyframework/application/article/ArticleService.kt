@@ -94,11 +94,31 @@ internal class ArticleService(
 
             userQueryPort.findBy(request.author) ?: run {
                 log["writeFail"] = "author id: ${request.author}"
-                return@logging ArticleCommandUseCase.WriteArticleResponse.fail("invalid author")
+                return@logging ArticleCommandUseCase.Response.fail("invalid author")
             }
 
             articleCommandPort.save(article)
 
-            return@logging ArticleCommandUseCase.WriteArticleResponse.success()
+            return@logging ArticleCommandUseCase.Response.success()
+        }
+
+    override fun updateArticle(request: ArticleCommandUseCase.UpdateArticleRequest) =
+        Log.logging(logger) { log ->
+            log["method"] = "updateArticle()"
+            val foundArticle: Article =
+                articleQueryPort.findBy(request.id) ?: run {
+                    log["updateFail"] = "article id: ${request.id}"
+                    return@logging ArticleCommandUseCase.Response.fail("invalid article")
+                }
+
+            val updatedArticle: Article =
+                foundArticle.update(
+                    title = request.title,
+                    content = request.content
+                )
+
+            articleCommandPort.save(updatedArticle)
+
+            return@logging ArticleCommandUseCase.Response.success()
         }
 }
