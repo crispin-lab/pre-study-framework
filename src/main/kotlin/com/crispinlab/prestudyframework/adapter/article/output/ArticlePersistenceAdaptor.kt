@@ -1,5 +1,6 @@
 package com.crispinlab.prestudyframework.adapter.article.output
 
+import com.crispinlab.prestudyframework.adapter.article.output.extensions.toEntity
 import com.crispinlab.prestudyframework.adapter.article.output.repository.ArticleRepository
 import com.crispinlab.prestudyframework.application.article.port.ArticleCommandPort
 import com.crispinlab.prestudyframework.application.article.port.ArticleQueryPort
@@ -23,11 +24,7 @@ internal class ArticlePersistenceAdaptor(
         TODO("Not yet implemented")
     }
 
-    override fun save(article: Article): Long {
-        TODO("Not yet implemented")
-    }
+    override fun save(article: Article): Long = articleRepository.save(article.toEntity())
 
-    override fun delete(id: Long) {
-        TODO("Not yet implemented")
-    }
+    override fun delete(id: Long) = articleRepository.delete(id)
 }

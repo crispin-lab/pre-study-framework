@@ -20,11 +20,7 @@ internal class ArticleRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-    override fun save(article: ArticleEntity): Long {
-        TODO("Not yet implemented")
-    }
+    override fun save(article: ArticleEntity): Long = articleJpaRepository.save(article).id
 
-    override fun delete(id: Long) {
-        TODO("Not yet implemented")
-    }
+    override fun delete(id: Long) = articleJpaRepository.deleteById(id)
 }
