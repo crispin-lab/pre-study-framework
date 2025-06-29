@@ -166,7 +166,9 @@ class ArticleServiceTest {
                     ArticleCommandUseCase.UpdateArticleRequest(
                         id = articleId,
                         title = "업데이트 게시글",
-                        content = "업데이트 진행"
+                        content = "업데이트 진행",
+                        username = "testUser09",
+                        password = "abcDEF09"
                     )
 
                 articleFakePort.singleArticleFixture()
@@ -195,8 +197,12 @@ class ArticleServiceTest {
                     ArticleCommandUseCase.UpdateArticleRequest(
                         id = articleId,
                         title = "업데이트 게시글",
-                        content = "업데이트 진행"
+                        content = "업데이트 진행",
+                        username = "testUser09",
+                        password = "abcDEF09"
                     )
+
+                userFakePort.singleUserFixture()
 
                 // when
                 val actual: ArticleCommandUseCase.Response = articleService.updateArticle(request)
@@ -205,6 +211,60 @@ class ArticleServiceTest {
                 SoftAssertions.assertSoftly { softAssertions ->
                     softAssertions.assertThat(actual.code).isEqualTo(400)
                     softAssertions.assertThat(actual.message).isEqualTo("invalid article")
+                }
+            }
+
+            @Test
+            @DisplayName("요청한 username 이 존재하지 않는 경우 업데이트가 실패해야 한다.")
+            fun updateTest2() {
+                // given
+                val articleId = 1L
+                val request =
+                    ArticleCommandUseCase.UpdateArticleRequest(
+                        id = articleId,
+                        title = "업데이트 게시글",
+                        content = "업데이트 진행",
+                        username = "wrongUsername",
+                        password = "abcDEF09"
+                    )
+
+                articleFakePort.singleArticleFixture()
+                userFakePort.singleUserFixture()
+
+                // when
+                val actual: ArticleCommandUseCase.Response = articleService.updateArticle(request)
+
+                // then
+                SoftAssertions.assertSoftly { softAssertions ->
+                    softAssertions.assertThat(actual.code).isEqualTo(400)
+                    softAssertions.assertThat(actual.message).isEqualTo("invalid user")
+                }
+            }
+
+            @Test
+            @DisplayName("요청한 password 가 잘못된 경우 업데이트가 실패해야 한다.")
+            fun updateTest3() {
+                // given
+                val articleId = 1L
+                val request =
+                    ArticleCommandUseCase.UpdateArticleRequest(
+                        id = articleId,
+                        title = "업데이트 게시글",
+                        content = "업데이트 진행",
+                        username = "testUser09",
+                        password = "wrongPassword"
+                    )
+
+                articleFakePort.singleArticleFixture()
+                userFakePort.singleUserFixture()
+
+                // when
+                val actual: ArticleCommandUseCase.Response = articleService.updateArticle(request)
+
+                // then
+                SoftAssertions.assertSoftly { softAssertions ->
+                    softAssertions.assertThat(actual.code).isEqualTo(400)
+                    softAssertions.assertThat(actual.message).isEqualTo("invalid password")
                 }
             }
         }
