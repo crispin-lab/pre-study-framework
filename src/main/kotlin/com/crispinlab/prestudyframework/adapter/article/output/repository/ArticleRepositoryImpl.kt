@@ -12,9 +12,7 @@ internal class ArticleRepositoryImpl(
     override fun findAllBy(
         offset: Int,
         limit: Int
-    ): List<ArticleEntity> {
-        TODO("Not yet implemented")
-    }
+    ): List<ArticleEntity> = articleJpaRepository.findAllBy(offset = offset, limit = limit)
 
     override fun findBy(id: Long): ArticleEntity? {
         TODO("Not yet implemented")

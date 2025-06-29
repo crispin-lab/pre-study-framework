@@ -20,4 +20,23 @@ internal interface ArticleJpaRepository : JpaRepository<ArticleEntity, Long> {
     fun count(
         @Param("limit") limit: Int
     ): Int
+
+    @Query(
+        value = """
+            SELECT articles.id, articles.title, articles.content, articles.author, articles.password,
+                articles.is_deleted, articles.deleted_at
+            FROM (
+                SELECT articles.id
+                FROM articles
+                WHERE is_deleted = false
+                LIMIT :limit OFFSET :offset
+            ) sub
+            LEFT JOIN articls ON sub.id = articls.id
+        """,
+        nativeQuery = true
+    )
+    fun findAllBy(
+        @Param("offset") offset: Int,
+        @Param("limit") limit: Int
+    ): List<ArticleEntity>
 }

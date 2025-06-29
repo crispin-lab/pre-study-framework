@@ -10,3 +10,14 @@ internal fun Article.toEntity(): ArticleEntity =
         author = this.author,
         password = this.password
     )
+
+internal fun ArticleEntity.toDomain(): Article =
+    Article(
+        id = this.id,
+        title = this.title,
+        content = this.content,
+        author = this.author,
+        password = this.password,
+        createdAt = this.createdAt,
+        updatedAt = this.updatedAt
+    )

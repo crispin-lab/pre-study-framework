@@ -1,5 +1,6 @@
 package com.crispinlab.prestudyframework.adapter.article.output
 
+import com.crispinlab.prestudyframework.adapter.article.output.extensions.toDomain
 import com.crispinlab.prestudyframework.adapter.article.output.extensions.toEntity
 import com.crispinlab.prestudyframework.adapter.article.output.repository.ArticleRepository
 import com.crispinlab.prestudyframework.application.article.port.ArticleCommandPort
@@ -16,9 +17,11 @@ internal class ArticlePersistenceAdaptor(
     override fun findAllBy(
         page: Int,
         pageSize: Int
-    ): List<Article> {
-        TODO("Not yet implemented")
-    }
+    ): List<Article> =
+        articleRepository.findAllBy(
+            offset = (page - 1) * pageSize,
+            limit = pageSize
+        ).map { it.toDomain() }
 
     override fun findBy(id: Long): Article? {
         TODO("Not yet implemented")
