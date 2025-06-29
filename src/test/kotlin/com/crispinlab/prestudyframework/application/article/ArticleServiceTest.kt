@@ -83,7 +83,7 @@ class ArticleServiceTest {
                 userFakePort.singleUserFixture()
 
                 // when
-                val actual: ArticleCommandUseCase.WriteArticleResponse =
+                val actual: ArticleCommandUseCase.Response =
                     articleService.writeArticle(request)
 
                 // then
@@ -110,12 +110,12 @@ class ArticleServiceTest {
                     )
 
                 // when
-                val actual: ArticleCommandUseCase.WriteArticleResponse =
+                val actual: ArticleCommandUseCase.Response =
                     articleService.writeArticle(request)
 
                 // then
                 SoftAssertions.assertSoftly { softAssertions ->
-                    softAssertions.assertThat(actual.code).isEqualTo(300)
+                    softAssertions.assertThat(actual.code).isEqualTo(400)
                     softAssertions.assertThat(actual.message).isEqualTo("invalid author")
                 }
             }
