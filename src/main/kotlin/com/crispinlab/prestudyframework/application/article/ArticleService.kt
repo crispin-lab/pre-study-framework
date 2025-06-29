@@ -22,7 +22,7 @@ internal class ArticleService(
 
     override fun retrieveArticles(
         params: ArticleQueryUseCase.RetrieveArticlesParams
-    ): ArticleQueryUseCase.RetrieveArticlesResponse =
+    ): ArticleQueryUseCase.Response<ArticleQueryUseCase.RetrieveArticlesResponse> =
         Log.logging(logger) { log ->
             log["method"] = "retrieveArticles()"
             val pageLimit: Int =
@@ -45,9 +45,11 @@ internal class ArticleService(
                     .findAllBy(authorIds)
                     .associate { it.id to it.username }
 
-            return@logging ArticleQueryUseCase.RetrieveArticlesResponse(
-                articles = articles.map { it.toDto(usernames) },
-                count = count
+            return@logging ArticleQueryUseCase.Response.success(
+                ArticleQueryUseCase.RetrieveArticlesResponse(
+                    articles = articles.map { it.toDto(usernames) },
+                    count = count
+                )
             )
         }
 

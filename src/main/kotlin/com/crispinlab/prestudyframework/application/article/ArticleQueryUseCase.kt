@@ -38,7 +38,7 @@ internal interface ArticleQueryUseCase {
         val updatedAt: Instant
     )
 
-    fun retrieveArticles(params: RetrieveArticlesParams): RetrieveArticlesResponse
+    fun retrieveArticles(params: RetrieveArticlesParams): Response<RetrieveArticlesResponse>
 
     fun retrieveArticle(id: Long): Response<RetrieveArticleResponse>
 }
