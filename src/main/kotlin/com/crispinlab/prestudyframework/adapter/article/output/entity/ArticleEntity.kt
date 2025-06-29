@@ -24,7 +24,7 @@ internal class ArticleEntity(
     @Column(nullable = false)
     val password: String,
     @Column(nullable = false)
-    val isDeleted: Boolean,
+    val isDeleted: Boolean = false,
     @Column(nullable = false)
     val deletedAt: Instant? = null
 ) : BaseEntity()
