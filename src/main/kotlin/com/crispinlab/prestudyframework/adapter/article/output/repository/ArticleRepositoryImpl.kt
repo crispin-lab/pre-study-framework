@@ -4,10 +4,10 @@ import com.crispinlab.prestudyframework.domain.article.Article
 import org.springframework.stereotype.Repository
 
 @Repository
-internal class ArticleRepositoryImpl() : ArticleRepository {
-    override fun count(pageLimit: Int): Int {
-        TODO("Not yet implemented")
-    }
+internal class ArticleRepositoryImpl(
+    private val articleJpaRepository: ArticleJpaRepository
+) : ArticleRepository {
+    override fun count(pageLimit: Int): Int = articleJpaRepository.count(pageLimit)
 
     override fun findAllBy(
         page: Int,

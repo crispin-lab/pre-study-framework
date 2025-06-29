@@ -1,15 +1,16 @@
 package com.crispinlab.prestudyframework.adapter.article.output
 
+import com.crispinlab.prestudyframework.adapter.article.output.repository.ArticleRepository
 import com.crispinlab.prestudyframework.application.article.port.ArticleCommandPort
 import com.crispinlab.prestudyframework.application.article.port.ArticleQueryPort
 import com.crispinlab.prestudyframework.domain.article.Article
 import org.springframework.stereotype.Component
 
 @Component
-internal class ArticlePersistenceAdaptor : ArticleQueryPort, ArticleCommandPort {
-    override fun count(pageLimit: Int): Int {
-        TODO("Not yet implemented")
-    }
+internal class ArticlePersistenceAdaptor(
+    private val articleRepository: ArticleRepository
+) : ArticleQueryPort, ArticleCommandPort {
+    override fun count(pageLimit: Int): Int = articleRepository.count(pageLimit)
 
     override fun findAllBy(
         page: Int,
