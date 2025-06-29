@@ -23,9 +23,7 @@ internal class ArticlePersistenceAdaptor(
             limit = pageSize
         ).map { it.toDomain() }
 
-    override fun findBy(id: Long): Article? {
-        TODO("Not yet implemented")
-    }
+    override fun findBy(id: Long): Article? = articleRepository.findBy(id)?.toDomain()
 
     override fun save(article: Article): Long = articleRepository.save(article.toEntity())
 

@@ -1,6 +1,7 @@
 package com.crispinlab.prestudyframework.adapter.article.output.repository
 
 import com.crispinlab.prestudyframework.adapter.article.output.entity.ArticleEntity
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -14,9 +15,7 @@ internal class ArticleRepositoryImpl(
         limit: Int
     ): List<ArticleEntity> = articleJpaRepository.findAllBy(offset = offset, limit = limit)
 
-    override fun findBy(id: Long): ArticleEntity? {
-        TODO("Not yet implemented")
-    }
+    override fun findBy(id: Long): ArticleEntity? = articleJpaRepository.findByIdOrNull(id)
 
     override fun save(article: ArticleEntity): Long = articleJpaRepository.save(article).id
 
