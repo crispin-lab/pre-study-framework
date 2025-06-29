@@ -4,10 +4,20 @@ import java.time.Instant
 
 internal data class Article(
     val id: Long = 0L,
-    val title: String,
-    val content: String,
+    var title: String,
+    var content: String,
     val author: Long,
     val password: String,
     val createdAt: Instant = Instant.now(),
-    val updatedAt: Instant = Instant.now()
-)
+    var updatedAt: Instant = Instant.now()
+) {
+    fun update(
+        title: String?,
+        content: String?
+    ): Article {
+        title?.let { this.title = it }
+        content?.let { this.content = it }
+        this.updatedAt = Instant.now()
+        return this
+    }
+}
