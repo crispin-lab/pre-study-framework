@@ -209,4 +209,51 @@ class ArticleServiceTest {
             }
         }
     }
+
+    @Nested
+    @DisplayName("게시글 삭제 테스트")
+    inner class DeleteArticleTest() {
+        @Nested
+        @DisplayName("게시글 삭제 성공 테스트")
+        inner class DeleteArticleSuccessTest() {
+            @Test
+            @DisplayName("게시글을 삭제할 수 있어야 한다.")
+            fun deleteTest() {
+                // given
+                val articleId = 1L
+
+                articleFakePort.singleArticleFixture()
+                userFakePort.singleUserFixture()
+
+                // when
+                val actual: ArticleCommandUseCase.Response = articleService.deleteArticle(articleId)
+
+                // then
+                SoftAssertions.assertSoftly { softAssertions ->
+                    softAssertions.assertThat(actual.code).isEqualTo(200)
+                    softAssertions.assertThat(actual.message).isEqualTo("success")
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("게시글 삭제 실패 테스트")
+        inner class DeleteArticleFailTest() {
+            @Test
+            @DisplayName("요청 ID 에 해당하는 게시글이 존재하지 않는 경우 삭제가 실패해야 한다.")
+            fun deleteTest() {
+                // given
+                val articleId = 1L
+
+                // when
+                val actual: ArticleCommandUseCase.Response = articleService.deleteArticle(articleId)
+
+                // then
+                SoftAssertions.assertSoftly { softAssertions ->
+                    softAssertions.assertThat(actual.code).isEqualTo(400)
+                    softAssertions.assertThat(actual.message).isEqualTo("invalid article")
+                }
+            }
+        }
+    }
 }
