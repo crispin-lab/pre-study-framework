@@ -150,4 +150,63 @@ class ArticleServiceTest {
             }
         }
     }
+
+    @Nested
+    @DisplayName("게시글 업데이트 테스트")
+    inner class UpdateArticleTest() {
+        @Nested
+        @DisplayName("게시글 업데이트 성공 테스트")
+        inner class UpdateArticleSuccessTest() {
+            @Test
+            @DisplayName("게시글을 업데이트 할 수 있어야 한다.")
+            fun updateTest() {
+                // given
+                val articleId = 1L
+                val request =
+                    ArticleCommandUseCase.UpdateArticleRequest(
+                        id = articleId,
+                        title = "업데이트 게시글",
+                        content = "업데이트 진행"
+                    )
+
+                articleFakePort.singleArticleFixture()
+                userFakePort.singleUserFixture()
+
+                // when
+                val actual: ArticleCommandUseCase.Response = articleService.updateArticle(request)
+
+                // then
+                SoftAssertions.assertSoftly { softAssertions ->
+                    softAssertions.assertThat(actual.code).isEqualTo(200)
+                    softAssertions.assertThat(actual.message).isEqualTo("success")
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("게시글 업데이트 실패 테스트")
+        inner class UpdateArticleFailTest() {
+            @Test
+            @DisplayName("요청 ID 에 해당하는 게시글이 존재하지 않는 경우 업데이트가 실패해야 한다.")
+            fun updateTest() {
+                // given
+                val articleId = 1L
+                val request =
+                    ArticleCommandUseCase.UpdateArticleRequest(
+                        id = articleId,
+                        title = "업데이트 게시글",
+                        content = "업데이트 진행"
+                    )
+
+                // when
+                val actual: ArticleCommandUseCase.Response = articleService.updateArticle(request)
+
+                // then
+                SoftAssertions.assertSoftly { softAssertions ->
+                    softAssertions.assertThat(actual.code).isEqualTo(400)
+                    softAssertions.assertThat(actual.message).isEqualTo("invalid article")
+                }
+            }
+        }
+    }
 }
