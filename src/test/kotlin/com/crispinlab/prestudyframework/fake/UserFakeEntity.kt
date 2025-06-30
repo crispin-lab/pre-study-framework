@@ -2,6 +2,8 @@ package com.crispinlab.prestudyframework.fake
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.PostLoad
 import jakarta.persistence.PrePersist
@@ -44,6 +46,20 @@ class UserFakeEntity2(
     }
 }
 
+@Entity
+@Table(name = "test_user_table3")
+class UserFakeEntity3(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0L,
+    @Column(nullable = false)
+    val username: String,
+    @Column(nullable = false)
+    val password: String
+)
+
 interface UserFakeRepository : JpaRepository<UserFakeEntity, Long>
 
 interface UserFakeRepository2 : JpaRepository<UserFakeEntity2, Long>
+
+interface UserFakeRepository3 : JpaRepository<UserFakeEntity3, Long>
