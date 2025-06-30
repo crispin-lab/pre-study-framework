@@ -29,6 +29,11 @@ class JWTFilter(
                 ?.firstOrNull { it.name == "AUTH-TOKEN" }
                 ?.value
 
+        if (httpRequest.method.equals("GET", ignoreCase = true)) {
+            chain?.doFilter(request, response)
+            return
+        }
+
         if (jwt == null) {
             val response: ArticleResponse<Unit> =
                 ArticleResponse.error(
