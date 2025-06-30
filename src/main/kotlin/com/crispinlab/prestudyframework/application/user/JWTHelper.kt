@@ -4,6 +4,7 @@ import com.crispinlab.prestudyframework.common.config.JWTProperties
 import com.nimbusds.jose.JWSAlgorithm
 import com.nimbusds.jose.JWSHeader
 import com.nimbusds.jose.crypto.MACSigner
+import com.nimbusds.jose.crypto.MACVerifier
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import java.time.Instant
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Component
 
 interface JWTHelper {
     fun createJWT(userid: Long): String
+
+    fun parseJWT(jwt: String): String
 }
 
 @Component
@@ -32,6 +35,13 @@ class NimbusJWTHelper(
         signedJWT.sign(MACSigner(jwtProperties.secret))
 
         return signedJWT.serialize()
+    }
+
+    override fun parseJWT(jwt: String): String {
+        val signedJWT: SignedJWT = SignedJWT.parse(jwt)
+        val verifier = MACVerifier(jwtProperties.secret)
+        signedJWT.verify(verifier)
+        return signedJWT.jwtClaimsSet.subject
     }
 
     private fun calculateExpiration(): Instant =
