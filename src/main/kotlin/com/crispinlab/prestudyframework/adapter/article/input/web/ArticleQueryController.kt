@@ -5,6 +5,7 @@ import com.crispinlab.prestudyframework.adapter.article.input.web.response.Artic
 import com.crispinlab.prestudyframework.application.article.ArticleQueryUseCase
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -27,6 +28,22 @@ internal class ArticleQueryController(
                     pageSize = params.pageSize
                 )
             )
+        return ArticleResponse.success(
+            code = response.code,
+            message = response.message,
+            result = response.data!!
+        )
+    }
+
+    @GetMapping(
+        path = ["/article/{id}"],
+        produces = ["application/json", "application/vnd.pre-study.com-v1+json"]
+    )
+    fun retrieveArticle(
+        @PathVariable id: Long
+    ): ArticleResponse<ArticleQueryUseCase.RetrieveArticleResponse> {
+        val response: ArticleQueryUseCase.Response<ArticleQueryUseCase.RetrieveArticleResponse> =
+            articleQueryUseCase.retrieveArticle(id)
         return ArticleResponse.success(
             code = response.code,
             message = response.message,
