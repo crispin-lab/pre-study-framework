@@ -4,6 +4,7 @@ import com.crispinlab.prestudyframework.application.user.JWTHelper
 import com.nimbusds.jose.JWSAlgorithm
 import com.nimbusds.jose.JWSHeader
 import com.nimbusds.jose.crypto.MACSigner
+import com.nimbusds.jose.crypto.MACVerifier
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import java.time.Instant
@@ -25,6 +26,14 @@ class JWTFakeHelper : JWTHelper {
         signedJWT.sign(MACSigner(secret))
 
         return signedJWT.serialize()
+    }
+
+    override fun parseJWT(jwt: String): String {
+        val secret = "Z3Vlc3QtYW55LXRoaW5nLWxvbmdlci10aGFuLXR3ZW50eS1jaGFyYWN0ZXJz"
+        val signedJWT: SignedJWT = SignedJWT.parse(jwt)
+        val verifier = MACVerifier(secret)
+        signedJWT.verify(verifier)
+        return signedJWT.jwtClaimsSet.subject
     }
 
     private fun calculateExpiration(): Instant = Instant.now().plus(30, ChronoUnit.MINUTES)
