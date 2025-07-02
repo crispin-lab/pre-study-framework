@@ -12,13 +12,13 @@ internal class ArticleResponse<T> private constructor(
         fun <T> success(
             code: Int,
             message: String,
-            result: T
+            result: T? = null
         ): ArticleResponse<T> = ArticleResponse(code = code, message = message, result = result)
 
         fun <T> fail(
             code: Int,
             message: String,
-            result: T
+            result: T? = null
         ): ArticleResponse<T> = ArticleResponse(code = code, message = message, result = result)
 
         fun <T> error(
