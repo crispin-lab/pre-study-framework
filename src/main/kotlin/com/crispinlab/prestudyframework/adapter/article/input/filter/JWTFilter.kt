@@ -37,12 +37,12 @@ class JWTFilter(
         }
 
         if (jwt == null) {
-            val response: ArticleResponse<Unit> =
+            val articleResponse: ArticleResponse<Unit> =
                 ArticleResponse.error(
                     code = ErrorCode.MISSING_JWT_COOKIE.code,
                     message = ErrorCode.MISSING_JWT_COOKIE.message
                 )
-            httpResponse.writer.write(objectMapper.writeValueAsString(response))
+            httpResponse.writer.write(objectMapper.writeValueAsString(articleResponse))
             return
         }
 
@@ -51,12 +51,12 @@ class JWTFilter(
             httpRequest.setAttribute("username", subject)
             chain?.doFilter(httpRequest, httpResponse)
         } catch (_: Exception) {
-            val response: ArticleResponse<Unit> =
+            val articleResponse: ArticleResponse<Unit> =
                 ArticleResponse.error(
                     code = ErrorCode.INVALID_JWT.code,
                     message = ErrorCode.INVALID_JWT.message
                 )
-            httpResponse.writer.write(objectMapper.writeValueAsString(response))
+            httpResponse.writer.write(objectMapper.writeValueAsString(articleResponse))
         }
     }
 
