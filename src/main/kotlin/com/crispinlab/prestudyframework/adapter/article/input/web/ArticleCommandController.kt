@@ -5,6 +5,7 @@ import com.crispinlab.prestudyframework.adapter.article.input.web.response.Artic
 import com.crispinlab.prestudyframework.application.article.ArticleCommandUseCase
 import com.crispinlab.prestudyframework.common.exception.ErrorCode
 import jakarta.servlet.ServletRequest
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -20,7 +21,7 @@ internal class ArticleCommandController(
         produces = ["application/json", "application/vnd.pre-study.com-v1+json"]
     )
     fun writeArticle(
-        @RequestBody request: WriteArticleRequest,
+        @RequestBody @Valid request: WriteArticleRequest,
         servletRequest: ServletRequest
     ): ArticleResponse<Unit> {
         val userId: Long =
