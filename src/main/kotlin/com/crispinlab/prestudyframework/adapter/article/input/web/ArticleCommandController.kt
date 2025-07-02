@@ -16,7 +16,7 @@ internal class ArticleCommandController(
     private val articleCommandUseCase: ArticleCommandUseCase
 ) {
     @PostMapping(
-        path = ["/articles"],
+        path = ["/article"],
         produces = ["application/json", "application/vnd.pre-study.com-v1+json"]
     )
     fun writeArticle(
