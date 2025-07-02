@@ -7,7 +7,7 @@ import kotlin.reflect.KClass
 @Target(AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)
 @MustBeDocumented
-@Constraint(validatedBy = [])
+@Constraint(validatedBy = [TitleValidator::class])
 annotation class Title(
     val message: String = "invalid title",
     val groups: Array<KClass<*>> = [],
