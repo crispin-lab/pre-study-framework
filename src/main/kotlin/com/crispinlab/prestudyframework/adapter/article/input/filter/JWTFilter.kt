@@ -29,7 +29,9 @@ class JWTFilter(
                 ?.firstOrNull { it.name == "AUTH-TOKEN" }
                 ?.value
 
-        if (httpRequest.method.equals("GET", ignoreCase = true)) {
+        val allowedMethods: Set<String> = setOf("GET", "OPTIONS")
+
+        if (httpRequest.method.equalsAnyIgnoreCase(allowedMethods)) {
             chain?.doFilter(request, response)
             return
         }
@@ -56,5 +58,9 @@ class JWTFilter(
                 )
             httpResponse.writer.write(objectMapper.writeValueAsString(response))
         }
+    }
+
+    private fun String.equalsAnyIgnoreCase(candidates: Set<String>): Boolean {
+        return candidates.any { it.equals(this, ignoreCase = true) }
     }
 }
