@@ -1,11 +1,14 @@
 package com.crispinlab.prestudyframework.adapter.article.input.web
 
+import com.crispinlab.prestudyframework.adapter.article.input.filter.JWTFilter
 import com.crispinlab.prestudyframework.fake.ArticleFakeQueryUseCase
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.context.annotation.ComponentScan
+import org.springframework.context.annotation.FilterType
 import org.springframework.context.annotation.Import
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.ResultActions
@@ -15,7 +18,15 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.util.LinkedMultiValueMap
 
 @Import(ArticleFakeQueryUseCase::class)
-@WebMvcTest(ArticleQueryController::class)
+@WebMvcTest(
+    controllers = [ArticleQueryController::class],
+    excludeFilters = [
+        ComponentScan.Filter(
+            type = FilterType.ASSIGNABLE_TYPE,
+            classes = [JWTFilter::class]
+        )
+    ]
+)
 class ArticleQueryControllerTest {
     @Autowired
     private lateinit var mockMvc: MockMvc

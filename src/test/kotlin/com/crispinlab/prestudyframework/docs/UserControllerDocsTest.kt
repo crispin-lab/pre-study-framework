@@ -1,8 +1,8 @@
 package com.crispinlab.prestudyframework.docs
 
-import com.crispinlab.prestudyframework.adapter.user.input.web.UserCommandController
 import com.crispinlab.prestudyframework.adapter.user.input.web.request.UserLoginRequest
 import com.crispinlab.prestudyframework.adapter.user.input.web.request.UserRegisterRequest
+import com.crispinlab.prestudyframework.config.TestConfig
 import com.crispinlab.prestudyframework.fake.AuthHeaderFakeBuilder
 import com.crispinlab.prestudyframework.fake.UserFakeCommandUserCase
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper
@@ -14,7 +14,8 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
@@ -35,10 +36,11 @@ import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
 
+@SpringBootTest
+@AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @ExtendWith(RestDocumentationExtension::class)
-@Import(UserFakeCommandUserCase::class, AuthHeaderFakeBuilder::class)
-@WebMvcTest(UserCommandController::class)
+@Import(UserFakeCommandUserCase::class, AuthHeaderFakeBuilder::class, TestConfig::class)
 class UserControllerDocsTest {
     @Autowired
     private lateinit var mockMvc: MockMvc

@@ -1,17 +1,17 @@
 package com.crispinlab.prestudyframework.docs
 
-import com.crispinlab.prestudyframework.adapter.article.input.web.ArticleQueryController
+import com.crispinlab.prestudyframework.config.TestConfig
 import com.crispinlab.prestudyframework.fake.ArticleFakeQueryUseCase
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper
 import com.epages.restdocs.apispec.ResourceSnippetParameters
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
 import org.springframework.http.HttpHeaders
 import org.springframework.restdocs.RestDocumentationContextProvider
@@ -33,16 +33,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.context.WebApplicationContext
 
+@SpringBootTest
+@AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @ExtendWith(RestDocumentationExtension::class)
-@Import(ArticleFakeQueryUseCase::class)
-@WebMvcTest(ArticleQueryController::class)
+@Import(ArticleFakeQueryUseCase::class, TestConfig::class)
 class ArticleQueryControllerDocsTest {
     @Autowired
     private lateinit var mockMvc: MockMvc
-
-    @Autowired
-    private val objectMapper = ObjectMapper()
 
     @BeforeEach
     fun setUp(
