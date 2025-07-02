@@ -48,7 +48,7 @@ class JWTFilter(
 
         try {
             val subject: String = jwtHelper.parseJWT(jwt)
-            httpRequest.setAttribute("userId", subject)
+            httpRequest.setAttribute("username", subject)
             chain?.doFilter(httpRequest, httpResponse)
         } catch (_: Exception) {
             val response: ArticleResponse<Unit> =
