@@ -7,5 +7,5 @@ class TitleValidator : ConstraintValidator<Title, String> {
     override fun isValid(
         value: String?,
         context: ConstraintValidatorContext
-    ): Boolean = value == null || value.trim().isNotEmpty() && value.length <= 150
+    ): Boolean = value == null || (value.trim().isNotEmpty() && value.length <= 60)
 }
