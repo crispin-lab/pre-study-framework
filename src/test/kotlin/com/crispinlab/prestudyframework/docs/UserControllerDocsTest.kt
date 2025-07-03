@@ -21,6 +21,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.restdocs.RestDocumentationContextProvider
 import org.springframework.restdocs.RestDocumentationExtension
+import org.springframework.restdocs.cookies.CookieDocumentation
 import org.springframework.restdocs.headers.HeaderDocumentation
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation
 import org.springframework.restdocs.operation.preprocess.Preprocessors
@@ -219,6 +220,10 @@ class UserControllerDocsTest {
                                             .key("auth-cookie")
                                             .value("{{Cookie}}")
                                     )
+                            ),
+                            CookieDocumentation.responseCookies(
+                                CookieDocumentation.cookieWithName("AUTH-TOKEN")
+                                    .description("사용자 인증 토큰")
                             )
                         ),
                     requestPreprocessor =

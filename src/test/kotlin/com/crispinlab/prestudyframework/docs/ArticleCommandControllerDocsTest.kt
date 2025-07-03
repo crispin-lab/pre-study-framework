@@ -8,6 +8,7 @@ import com.crispinlab.prestudyframework.fake.ArticleFakeCommandUseCase
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper
 import com.epages.restdocs.apispec.ResourceSnippetParameters
 import com.fasterxml.jackson.databind.ObjectMapper
+import jakarta.servlet.http.Cookie
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -21,6 +22,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.restdocs.RestDocumentationContextProvider
 import org.springframework.restdocs.RestDocumentationExtension
+import org.springframework.restdocs.cookies.CookieDocumentation
 import org.springframework.restdocs.headers.HeaderDocumentation
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation
 import org.springframework.restdocs.operation.preprocess.Preprocessors
@@ -83,6 +85,7 @@ class ArticleCommandControllerDocsTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .requestAttr("userId", 1L)
                     .header("Authorization", "token")
+                    .cookie(Cookie("AUTH-TOKEN", "token"))
             ).andDo(MockMvcResultHandlers.print())
 
         // then
@@ -123,7 +126,11 @@ class ArticleCommandControllerDocsTest {
                                         Attributes
                                             .key(HttpHeaders.AUTHORIZATION)
                                             .value("Token")
-                                    )
+                                    ).optional()
+                            ),
+                            CookieDocumentation.requestCookies(
+                                CookieDocumentation.cookieWithName("AUTH-TOKEN")
+                                    .description("사용자 인증 토큰")
                             )
                         ),
                     requestPreprocessor =
@@ -160,6 +167,7 @@ class ArticleCommandControllerDocsTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .requestAttr("userId", 1L)
                     .header("Authorization", "token")
+                    .cookie(Cookie("AUTH-TOKEN", "token"))
             ).andDo(MockMvcResultHandlers.print())
 
         // then
@@ -200,7 +208,11 @@ class ArticleCommandControllerDocsTest {
                                         Attributes
                                             .key(HttpHeaders.AUTHORIZATION)
                                             .value("Token")
-                                    )
+                                    ).optional()
+                            ),
+                            CookieDocumentation.requestCookies(
+                                CookieDocumentation.cookieWithName("AUTH-TOKEN")
+                                    .description("사용자 인증 토큰")
                             )
                         ),
                     requestPreprocessor =
@@ -235,6 +247,7 @@ class ArticleCommandControllerDocsTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .requestAttr("userId", 1L)
                     .header("Authorization", "token")
+                    .cookie(Cookie("AUTH-TOKEN", "token"))
             ).andDo(MockMvcResultHandlers.print())
 
         // then
@@ -275,7 +288,11 @@ class ArticleCommandControllerDocsTest {
                                         Attributes
                                             .key(HttpHeaders.AUTHORIZATION)
                                             .value("Token")
-                                    )
+                                    ).optional()
+                            ),
+                            CookieDocumentation.requestCookies(
+                                CookieDocumentation.cookieWithName("AUTH-TOKEN")
+                                    .description("사용자 인증 토큰")
                             )
                         ),
                     requestPreprocessor =
