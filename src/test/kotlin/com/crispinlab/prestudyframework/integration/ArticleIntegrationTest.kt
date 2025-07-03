@@ -121,6 +121,49 @@ class ArticleIntegrationTest : AbstractIntegrationTest() {
         }
     }
 
+    @Nested
+    @DisplayName("게시글 조회 통합 테스트")
+    inner class RetrieveArticleTest() {
+        @Nested
+        @DisplayName("게시글 조회 성공 통합 테스트")
+        inner class RetrieveArticleSuccessTest() {
+            @Test
+            @DisplayName("게시글 조회 조회 성공 테스트")
+            fun retrieveArticleTest() {
+                // given
+                UserSteps.singleRegisterUser()
+                val token: String = UserSteps.loginUser()
+                ArticleSteps.singleWriteArticle(token)
+
+                val articleId: Long = articleRepository.findAllBy(0, 1).first().id
+
+                // when
+                val response: Response =
+                    Given {
+                        log().all()
+                        contentType(MediaType.APPLICATION_JSON_VALUE)
+                        accept("application/vnd.pre-study.com-v1+json")
+                        pathParam("id", articleId)
+                    } When {
+                        get("/api/articles/{id}")
+                    } Then {
+                        log().all()
+                        statusCode(200)
+                    } Extract {
+                        response()
+                    }
+
+                // then
+                SoftAssertions.assertSoftly { softAssertions ->
+                    softAssertions.assertThat(response.jsonPath().getShort("code"))
+                        .isEqualTo(200)
+                    softAssertions.assertThat(response.jsonPath().getString("message"))
+                        .isEqualTo("success")
+                }
+            }
+        }
+    }
+
     private suspend fun generateArticleBy(
         userId: Long,
         count: Int
