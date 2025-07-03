@@ -230,7 +230,7 @@ class ArticleIntegrationTest : AbstractIntegrationTest() {
                     UpdateArticleRequest(
                         title = "업데이트 테스트",
                         content = "업데이트 중",
-                        password = "abcDEF123"
+                        password = "abcDEF09"
                     )
 
                 UserSteps.singleRegisterUser()
@@ -280,7 +280,7 @@ class ArticleIntegrationTest : AbstractIntegrationTest() {
                 // given
                 val request =
                     DeleteArticleRequest(
-                        password = "abcDEF123"
+                        password = "abcDEF09"
                     )
 
                 UserSteps.singleRegisterUser()

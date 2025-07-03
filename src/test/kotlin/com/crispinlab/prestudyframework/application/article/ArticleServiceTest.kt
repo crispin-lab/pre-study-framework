@@ -169,7 +169,7 @@ class ArticleServiceTest {
                         title = "업데이트 게시글",
                         content = "업데이트 진행",
                         author = 1L,
-                        password = "abcDEF09"
+                        password = "abcDEF123"
                     )
 
                 articleFakePort.singleArticleFixture()
@@ -285,7 +285,7 @@ class ArticleServiceTest {
                     ArticleCommandUseCase.DeleteArticleRequest(
                         id = 1L,
                         author = 1L,
-                        password = "abcDEF09"
+                        password = "abcDEF123"
                     )
 
                 articleFakePort.singleArticleFixture()
