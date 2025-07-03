@@ -19,7 +19,7 @@ create table articles
   author     bigint                      not null,
   created_at timestamp(6) with time zone not null,
   created_by bigint                      not null,
-  deleted_at timestamp(6) with time zone not null,
+  deleted_at timestamp(6) with time zone,
   id         bigint                      not null,
   updated_at timestamp(6) with time zone not null,
   updated_by bigint                      not null,
