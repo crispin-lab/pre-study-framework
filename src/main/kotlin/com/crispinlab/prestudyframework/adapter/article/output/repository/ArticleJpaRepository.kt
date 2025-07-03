@@ -24,6 +24,7 @@ internal interface ArticleJpaRepository : JpaRepository<ArticleEntity, Long> {
     @Query(
         value = """
             SELECT articles.id, articles.title, articles.content, articles.author, articles.password,
+                articles.created_at, articles.updated_at, articles.created_by, articles.updated_by, 
                 articles.is_deleted, articles.deleted_at
             FROM (
                 SELECT articles.id
@@ -31,7 +32,7 @@ internal interface ArticleJpaRepository : JpaRepository<ArticleEntity, Long> {
                 WHERE is_deleted = false
                 LIMIT :limit OFFSET :offset
             ) sub
-            LEFT JOIN articls ON sub.id = articls.id
+            LEFT JOIN articles ON sub.id = articles.id
         """,
         nativeQuery = true
     )
