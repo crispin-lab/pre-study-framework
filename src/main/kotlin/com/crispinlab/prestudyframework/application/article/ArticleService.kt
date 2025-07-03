@@ -108,7 +108,7 @@ internal class ArticleService(
         Log.logging(logger) { log ->
             log["method"] = "updateArticle()"
 
-            if (!isAuthenticated(username = request.username, password = request.password, log)) {
+            if (!isAuthenticated(userId = request.author, password = request.password, log)) {
                 return@logging ArticleCommandUseCase.Response.fail("authenticate fail")
             }
 
@@ -133,7 +133,7 @@ internal class ArticleService(
         Log.logging(logger) { log ->
             log["method"] = "deleteArticle()"
 
-            if (!isAuthenticated(username = request.username, password = request.password, log)) {
+            if (!isAuthenticated(userId = request.author, password = request.password, log)) {
                 return@logging ArticleCommandUseCase.Response.fail("authenticate fail")
             }
 
@@ -147,18 +147,18 @@ internal class ArticleService(
         }
 
     private fun isAuthenticated(
-        username: String,
+        userId: Long,
         password: String,
         log: MutableMap<String, Any>
     ): Boolean {
-        val user: User? = userQueryPort.findBy(username)
-        if (user == null) {
-            log["authFail"] = "username: $username"
-            return false
-        }
+        val foundUser: User =
+            userQueryPort.findBy(userId) ?: run {
+                log["authFail"] = "author id: $userId"
+                return false
+            }
 
-        if (!passwordHelper.matches(rawPassword = password, encodedPassword = user.password)) {
-            log["authFail"] = "username: $username"
+        if (!passwordHelper.matches(rawPassword = password, encodedPassword = foundUser.password)) {
+            log["authFail"] = "username: ${foundUser.username}"
             return false
         }
         return true

@@ -27,13 +27,13 @@ internal interface ArticleCommandUseCase {
         val id: Long,
         val title: String,
         val content: String,
-        val username: String,
+        val author: Long,
         val password: String
     )
 
     data class DeleteArticleRequest(
         val id: Long,
-        val username: String,
+        val author: Long,
         val password: String
     )
 
