@@ -6,9 +6,9 @@ import com.crispinlab.prestudyframework.common.annotation.Title
 
 data class UpdateArticleRequest(
     @Title
-    val title: String,
+    val title: String? = null,
     @NotEmptyOrBlank
-    val content: String,
+    val content: String? = null,
     @Password
     val password: String
 )

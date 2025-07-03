@@ -25,8 +25,8 @@ internal interface ArticleCommandUseCase {
 
     data class UpdateArticleRequest(
         val id: Long,
-        val title: String,
-        val content: String,
+        val title: String?,
+        val content: String?,
         val author: Long,
         val password: String
     )
