@@ -1,6 +1,7 @@
 package com.crispinlab.prestudyframework.adapter.article.input.web
 
 import com.crispinlab.prestudyframework.adapter.article.input.filter.JWTFilter
+import com.crispinlab.prestudyframework.adapter.article.input.web.request.UpdateArticleRequest
 import com.crispinlab.prestudyframework.adapter.article.input.web.request.WriteArticleRequest
 import com.crispinlab.prestudyframework.fake.ArticleFakeCommandUseCase
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -188,6 +189,50 @@ class ArticleCommandControllerTest {
                             .value("title"),
                         MockMvcResultMatchers.jsonPath("$.result.errors[0].value")
                             .value(request.title)
+                    )
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("게시글 업데이트 요청 테스트")
+    inner class UpdateArticleApiTest() {
+        @Nested
+        @DisplayName("게시글 업데이트 요청 성공 테스트")
+        inner class UpdateArticleApiSuccessTest {
+            @Test
+            @DisplayName("게시글 업데이트 요청을 할 수 있어야 한다.")
+            fun updateApiTest() {
+                // given
+                val articleId = 1L
+                val userId = 1L
+                val request =
+                    UpdateArticleRequest(
+                        title = "업데이트 테스트",
+                        content = "업데이트 중",
+                        password = "abcDEF09"
+                    )
+
+                // when
+                val result: ResultActions =
+                    mockMvc
+                        .perform(
+                            MockMvcRequestBuilders
+                                .patch("/api/articles/{id}", articleId)
+                                .accept("application/vnd.pre-study.com-v1+json")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .requestAttr("userId", userId)
+                        ).andDo(MockMvcResultHandlers.print())
+
+                // then
+                result
+                    .andExpectAll(
+                        MockMvcResultMatchers.status().isOk,
+                        MockMvcResultMatchers.jsonPath("$.code")
+                            .value(200),
+                        MockMvcResultMatchers.jsonPath("$.message")
+                            .value("success")
                     )
             }
         }
