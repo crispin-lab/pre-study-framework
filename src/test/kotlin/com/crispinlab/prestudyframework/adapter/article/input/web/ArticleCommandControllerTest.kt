@@ -1,6 +1,7 @@
 package com.crispinlab.prestudyframework.adapter.article.input.web
 
 import com.crispinlab.prestudyframework.adapter.article.input.filter.JWTFilter
+import com.crispinlab.prestudyframework.adapter.article.input.web.request.DeleteArticleRequest
 import com.crispinlab.prestudyframework.adapter.article.input.web.request.UpdateArticleRequest
 import com.crispinlab.prestudyframework.adapter.article.input.web.request.WriteArticleRequest
 import com.crispinlab.prestudyframework.fake.ArticleFakeCommandUseCase
@@ -219,6 +220,48 @@ class ArticleCommandControllerTest {
                         .perform(
                             MockMvcRequestBuilders
                                 .patch("/api/articles/{id}", articleId)
+                                .accept("application/vnd.pre-study.com-v1+json")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .requestAttr("userId", userId)
+                        ).andDo(MockMvcResultHandlers.print())
+
+                // then
+                result
+                    .andExpectAll(
+                        MockMvcResultMatchers.status().isOk,
+                        MockMvcResultMatchers.jsonPath("$.code")
+                            .value(200),
+                        MockMvcResultMatchers.jsonPath("$.message")
+                            .value("success")
+                    )
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("게시글 삭제 요청 테스트")
+    inner class DeleteArticleApiTest() {
+        @Nested
+        @DisplayName("게시글 삭제 요청 성공 테스트")
+        inner class DeleteArticleApiSuccessTest() {
+            @Test
+            @DisplayName("게시글 삭제 요청을 할 수 있어야 한다.")
+            fun deleteApiTest() {
+                // given
+                val articleId = 1L
+                val userId = 1L
+                val request =
+                    DeleteArticleRequest(
+                        password = "abcDEF09"
+                    )
+
+                // when
+                val result: ResultActions =
+                    mockMvc
+                        .perform(
+                            MockMvcRequestBuilders
+                                .delete("/api/articles/{id}", articleId)
                                 .accept("application/vnd.pre-study.com-v1+json")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON)
