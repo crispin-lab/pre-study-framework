@@ -25,7 +25,7 @@ paths:
       - name: Authorization
         in: header
         description: Authentication Token
-        required: true
+        required: false
         schema:
           type: string
         example: token
@@ -102,8 +102,8 @@ paths:
                           "title" : "테스트",
                           "content" : "테스트 입니다.",
                           "author" : "테스트 작성자",
-                          "createdAt" : "2025-07-03T03:48:49.039518Z",
-                          "updatedAt" : "2025-07-03T03:48:49.039519Z"
+                          "createdAt" : "2025-07-03T10:31:09.581024Z",
+                          "updatedAt" : "2025-07-03T10:31:09.581024Z"
                         } ],
                         "count" : 1
                       }
@@ -188,8 +188,8 @@ paths:
                         "title" : "테스트",
                         "content" : "테스트 입니다.",
                         "author" : "테스트 작성자",
-                        "createdAt" : "2025-07-03T03:48:48.840351Z",
-                        "updatedAt" : "2025-07-03T03:48:48.840354Z"
+                        "createdAt" : "2025-07-03T10:31:09.518812Z",
+                        "updatedAt" : "2025-07-03T10:31:09.518812Z"
                       }
                     }
     delete:
@@ -215,7 +215,7 @@ paths:
       - name: Authorization
         in: header
         description: Authentication Token
-        required: true
+        required: false
         schema:
           type: string
         example: token
@@ -267,7 +267,7 @@ paths:
       - name: Authorization
         in: header
         description: Authentication Token
-        required: true
+        required: false
         schema:
           type: string
         example: token
