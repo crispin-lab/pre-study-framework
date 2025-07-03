@@ -114,15 +114,15 @@ internal class ArticleService(
         Log.logging(logger) { log ->
             log["method"] = "updateArticle()"
 
-            if (!isAuthenticated(userId = request.author, password = request.password, log)) {
-                return@logging ArticleCommandUseCase.Response.fail("authenticate fail")
-            }
-
             val foundArticle: Article =
                 articleQueryPort.findBy(request.id) ?: run {
                     log["updateFail"] = "article id: ${request.id}"
                     return@logging ArticleCommandUseCase.Response.fail("invalid article")
                 }
+
+            if (!isAuthenticated(article = foundArticle, password = request.password, log)) {
+                return@logging ArticleCommandUseCase.Response.fail("authenticate fail")
+            }
 
             val updatedArticle: Article =
                 foundArticle.update(
@@ -140,13 +140,14 @@ internal class ArticleService(
         Log.logging(logger) { log ->
             log["method"] = "deleteArticle()"
 
-            if (!isAuthenticated(userId = request.author, password = request.password, log)) {
-                return@logging ArticleCommandUseCase.Response.fail("authenticate fail")
-            }
+            val foundArticle: Article =
+                articleQueryPort.findBy(request.id) ?: run {
+                    log["updateFail"] = "article id: ${request.id}"
+                    return@logging ArticleCommandUseCase.Response.fail("invalid article")
+                }
 
-            articleQueryPort.findBy(request.id) ?: run {
-                log["updateFail"] = "article id: ${request.id}"
-                return@logging ArticleCommandUseCase.Response.fail("invalid article")
+            if (!isAuthenticated(article = foundArticle, password = request.password, log)) {
+                return@logging ArticleCommandUseCase.Response.fail("authenticate fail")
             }
 
             articleCommandPort.delete(request.id)
@@ -154,18 +155,12 @@ internal class ArticleService(
         }
 
     private fun isAuthenticated(
-        userId: Long,
+        article: Article,
         password: String,
         log: MutableMap<String, Any>
     ): Boolean {
-        val foundUser: User =
-            userQueryPort.findBy(userId) ?: run {
-                log["authFail"] = "author id: $userId"
-                return false
-            }
-
-        if (!passwordHelper.matches(rawPassword = password, encodedPassword = foundUser.password)) {
-            log["authFail"] = "username: ${foundUser.username}"
+        if (!passwordHelper.matches(rawPassword = password, encodedPassword = article.password)) {
+            log["authFail"] = "articleId: ${article.id}"
             return false
         }
         return true
