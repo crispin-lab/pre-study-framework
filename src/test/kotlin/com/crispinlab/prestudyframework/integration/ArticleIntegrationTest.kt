@@ -1,5 +1,6 @@
 package com.crispinlab.prestudyframework.integration
 
+import com.crispinlab.prestudyframework.adapter.article.input.web.request.DeleteArticleRequest
 import com.crispinlab.prestudyframework.adapter.article.input.web.request.UpdateArticleRequest
 import com.crispinlab.prestudyframework.adapter.article.input.web.request.WriteArticleRequest
 import com.crispinlab.prestudyframework.adapter.article.output.entity.ArticleEntity
@@ -249,6 +250,56 @@ class ArticleIntegrationTest : AbstractIntegrationTest() {
                         cookie(Cookie.Builder("AUTH-TOKEN", token).build())
                     } When {
                         patch("/api/articles/{id}")
+                    } Then {
+                        log().all()
+                        statusCode(200)
+                    } Extract {
+                        response()
+                    }
+
+                // then
+                SoftAssertions.assertSoftly { softAssertions ->
+                    softAssertions.assertThat(response.jsonPath().getShort("code"))
+                        .isEqualTo(200)
+                    softAssertions.assertThat(response.jsonPath().getString("message"))
+                        .isEqualTo("success")
+                }
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("게시글 삭제 통합 테스트")
+    inner class DeleteArticleTest() {
+        @Nested
+        @DisplayName("게시글 삭제 성공 통합 테스트")
+        inner class DeleteArticleSuccessTest() {
+            @Test
+            @DisplayName("게시글 업데이트 성공 테스트")
+            fun deleteArticleTest() {
+                // given
+                val request =
+                    DeleteArticleRequest(
+                        password = "abcDEF123"
+                    )
+
+                UserSteps.singleRegisterUser()
+                val token: String = UserSteps.loginUser()
+                ArticleSteps.singleWriteArticle(token)
+
+                val articleId: Long = articleRepository.findAllBy(0, 1).first().id
+
+                // when
+                val response: Response =
+                    Given {
+                        log().all()
+                        contentType(MediaType.APPLICATION_JSON_VALUE)
+                        accept("application/vnd.pre-study.com-v1+json")
+                        body(request)
+                        pathParam("id", articleId)
+                        cookie(Cookie.Builder("AUTH-TOKEN", token).build())
+                    } When {
+                        delete("/api/articles/{id}")
                     } Then {
                         log().all()
                         statusCode(200)
