@@ -5,6 +5,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Lob
 import jakarta.persistence.Table
+import java.time.Instant
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.SQLRestriction
 
@@ -23,5 +24,7 @@ internal class ArticleEntity(
     @Column(nullable = false)
     val password: String,
     @Column(nullable = false)
-    val isDeleted: Boolean = false
+    val isDeleted: Boolean = false,
+    @Column(nullable = true)
+    val deletedAt: Instant? = null
 ) : BaseEntity()
