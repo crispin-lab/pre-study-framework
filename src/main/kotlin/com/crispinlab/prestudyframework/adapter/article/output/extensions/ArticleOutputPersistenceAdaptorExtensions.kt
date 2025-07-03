@@ -5,6 +5,7 @@ import com.crispinlab.prestudyframework.domain.article.Article
 
 internal fun Article.toEntity(): ArticleEntity =
     ArticleEntity(
+        id = this.id,
         title = this.title,
         content = this.content,
         author = this.author,

@@ -3,11 +3,14 @@ package com.crispinlab.prestudyframework.application.user
 import com.crispinlab.prestudyframework.application.user.port.UserCommandPort
 import com.crispinlab.prestudyframework.application.user.port.UserQueryPort
 import com.crispinlab.prestudyframework.common.util.Log
+import com.crispinlab.prestudyframework.common.util.SnowflakeIdCreator
 import com.crispinlab.prestudyframework.domain.user.User
 import org.slf4j.Logger
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional(readOnly = true)
 internal class UserService(
     private val passwordHelper: PasswordHelper,
     private val userCommandPort: UserCommandPort,
@@ -16,6 +19,7 @@ internal class UserService(
 ) : UserCommandUseCase {
     private val logger: Logger = Log.getLogger(UserService::class.java)
 
+    @Transactional
     override fun registerUser(
         request: UserCommandUseCase.RegisterRequest
     ): UserCommandUseCase.RegisterResponse =
@@ -28,6 +32,7 @@ internal class UserService(
 
             val user =
                 User(
+                    id = SnowflakeIdCreator.nextId(),
                     username = request.username,
                     password = passwordHelper.encode(request.password)
                 )

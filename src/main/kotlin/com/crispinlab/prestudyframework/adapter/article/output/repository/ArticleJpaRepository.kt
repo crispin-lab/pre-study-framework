@@ -12,6 +12,7 @@ internal interface ArticleJpaRepository : JpaRepository<ArticleEntity, Long> {
             FROM (
                 SELECT articles.id
                 FROM articles
+                WHERE is_deleted = false
                 LIMIT :limit
             ) sub;
         """,

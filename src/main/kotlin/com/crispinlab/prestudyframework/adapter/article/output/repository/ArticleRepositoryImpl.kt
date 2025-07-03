@@ -1,11 +1,13 @@
 package com.crispinlab.prestudyframework.adapter.article.output.repository
 
 import com.crispinlab.prestudyframework.adapter.article.output.entity.ArticleEntity
+import jakarta.persistence.EntityManager
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 
 @Repository
 internal class ArticleRepositoryImpl(
+    private val entityManager: EntityManager,
     private val articleJpaRepository: ArticleJpaRepository
 ) : ArticleRepository {
     override fun count(pageLimit: Int): Int = articleJpaRepository.count(pageLimit)
@@ -18,6 +20,8 @@ internal class ArticleRepositoryImpl(
     override fun findBy(id: Long): ArticleEntity? = articleJpaRepository.findByIdOrNull(id)
 
     override fun save(article: ArticleEntity): Long = articleJpaRepository.save(article).id
+
+    override fun update(article: ArticleEntity): Long = entityManager.merge(article).id
 
     override fun delete(id: Long) = articleJpaRepository.deleteById(id)
 }

@@ -14,6 +14,7 @@ internal class UserPersistenceAdapter(
     override fun register(user: User): Long =
         userRepository.save(
             UserEntity(
+                id = user.id,
                 username = user.username,
                 password = user.password
             )

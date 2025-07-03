@@ -27,5 +27,7 @@ internal class ArticlePersistenceAdaptor(
 
     override fun save(article: Article): Long = articleRepository.save(article.toEntity())
 
+    override fun update(article: Article): Long = articleRepository.update(article.toEntity())
+
     override fun delete(id: Long) = articleRepository.delete(id)
 }

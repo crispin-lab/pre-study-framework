@@ -1,9 +1,7 @@
 package com.crispinlab.prestudyframework.adapter
 
-import com.crispinlab.prestudyframework.common.util.SnowflakeIdCreator
 import jakarta.persistence.Column
 import jakarta.persistence.EntityListeners
-import jakarta.persistence.Id
 import jakarta.persistence.MappedSuperclass
 import jakarta.persistence.PostLoad
 import jakarta.persistence.PrePersist
@@ -16,9 +14,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
 internal abstract class BaseEntity() : Persistable<Long> {
-    @Id
-    val id: Long = SnowflakeIdCreator.nextId()
-
     @Column(nullable = false)
     val createdAt: Instant = Instant.now()
 

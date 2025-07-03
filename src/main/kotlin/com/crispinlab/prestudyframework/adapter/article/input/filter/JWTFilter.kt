@@ -49,7 +49,6 @@ class JWTFilter(
         try {
             val subject: Long = jwtHelper.parseJWT(jwt).toLong()
             httpRequest.setAttribute("userId", subject)
-            chain?.doFilter(httpRequest, httpResponse)
         } catch (_: Exception) {
             val articleResponse: ArticleResponse<Unit> =
                 ArticleResponse.error(
@@ -58,6 +57,7 @@ class JWTFilter(
                 )
             httpResponse.writer.write(objectMapper.writeValueAsString(articleResponse))
         }
+        chain?.doFilter(httpRequest, httpResponse)
     }
 
     private fun String.equalsAnyIgnoreCase(candidates: Set<String>): Boolean {

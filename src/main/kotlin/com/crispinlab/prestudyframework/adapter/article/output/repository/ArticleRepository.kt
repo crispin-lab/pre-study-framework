@@ -14,5 +14,7 @@ internal interface ArticleRepository {
 
     fun save(article: ArticleEntity): Long
 
+    fun update(article: ArticleEntity): Long
+
     fun delete(id: Long)
 }

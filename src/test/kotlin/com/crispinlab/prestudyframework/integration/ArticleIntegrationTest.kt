@@ -326,6 +326,7 @@ class ArticleIntegrationTest : AbstractIntegrationTest() {
             async {
                 articleRepository.save(
                     ArticleEntity(
+                        id = i.toLong(),
                         title = "테스트 게시글 $i",
                         content = "테스트 게시글 $i 입니다.",
                         author = userId,

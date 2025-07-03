@@ -6,12 +6,15 @@ import com.crispinlab.prestudyframework.application.user.PasswordHelper
 import com.crispinlab.prestudyframework.application.user.port.UserQueryPort
 import com.crispinlab.prestudyframework.common.util.Log
 import com.crispinlab.prestudyframework.common.util.PageLimitCalculator
+import com.crispinlab.prestudyframework.common.util.SnowflakeIdCreator
 import com.crispinlab.prestudyframework.domain.article.Article
 import com.crispinlab.prestudyframework.domain.user.User
 import org.slf4j.Logger
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional(readOnly = true)
 internal class ArticleService(
     private val articleQueryPort: ArticleQueryPort,
     private val articleCommandPort: ArticleCommandPort,
@@ -83,11 +86,13 @@ internal class ArticleService(
             )
         }
 
+    @Transactional
     override fun writeArticle(request: ArticleCommandUseCase.WriteArticleRequest) =
         Log.logging(logger) { log ->
             log["method"] = "writeArticle()"
             val article =
                 Article(
+                    id = SnowflakeIdCreator.nextId(),
                     title = request.title,
                     content = request.content,
                     author = request.author,
@@ -104,6 +109,7 @@ internal class ArticleService(
             return@logging ArticleCommandUseCase.Response.success()
         }
 
+    @Transactional
     override fun updateArticle(request: ArticleCommandUseCase.UpdateArticleRequest) =
         Log.logging(logger) { log ->
             log["method"] = "updateArticle()"
@@ -124,11 +130,12 @@ internal class ArticleService(
                     content = request.content
                 )
 
-            articleCommandPort.save(updatedArticle)
+            articleCommandPort.update(updatedArticle)
 
             return@logging ArticleCommandUseCase.Response.success()
         }
 
+    @Transactional
     override fun deleteArticle(request: ArticleCommandUseCase.DeleteArticleRequest) =
         Log.logging(logger) { log ->
             log["method"] = "deleteArticle()"
