@@ -27,7 +27,6 @@ object ArticleSteps {
         } When {
             post("/api/article")
         } Then {
-            log().all()
             statusCode(200)
         } Extract {
             response()

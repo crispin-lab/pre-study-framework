@@ -24,8 +24,6 @@ object UserSteps {
             post("/api/users")
         } Then {
             statusCode(200)
-        } Extract {
-            response()
         }
     }
 
