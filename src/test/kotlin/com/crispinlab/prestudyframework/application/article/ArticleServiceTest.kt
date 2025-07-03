@@ -168,7 +168,7 @@ class ArticleServiceTest {
                         id = articleId,
                         title = "업데이트 게시글",
                         content = "업데이트 진행",
-                        username = "testUser09",
+                        author = 1L,
                         password = "abcDEF09"
                     )
 
@@ -199,7 +199,7 @@ class ArticleServiceTest {
                         id = articleId,
                         title = "업데이트 게시글",
                         content = "업데이트 진행",
-                        username = "testUser09",
+                        author = 1L,
                         password = "abcDEF09"
                     )
 
@@ -216,7 +216,7 @@ class ArticleServiceTest {
             }
 
             @Test
-            @DisplayName("요청한 username 이 존재하지 않는 경우 업데이트가 실패해야 한다.")
+            @DisplayName("요청한 authorId 가 존재하지 않는 경우 업데이트가 실패해야 한다.")
             fun updateTest2() {
                 // given
                 val articleId = 1L
@@ -225,7 +225,7 @@ class ArticleServiceTest {
                         id = articleId,
                         title = "업데이트 게시글",
                         content = "업데이트 진행",
-                        username = "wrongUsername",
+                        author = 0L,
                         password = "abcDEF09"
                     )
 
@@ -252,7 +252,7 @@ class ArticleServiceTest {
                         id = articleId,
                         title = "업데이트 게시글",
                         content = "업데이트 진행",
-                        username = "testUser09",
+                        author = 1L,
                         password = "wrongPassword"
                     )
 
@@ -284,7 +284,7 @@ class ArticleServiceTest {
                 val request =
                     ArticleCommandUseCase.DeleteArticleRequest(
                         id = 1L,
-                        username = "testUser09",
+                        author = 1L,
                         password = "abcDEF09"
                     )
 
@@ -312,7 +312,7 @@ class ArticleServiceTest {
                 val request =
                     ArticleCommandUseCase.DeleteArticleRequest(
                         id = 1L,
-                        username = "testUser09",
+                        author = 1L,
                         password = "abcDEF09"
                     )
 
@@ -335,7 +335,7 @@ class ArticleServiceTest {
                 val request =
                     ArticleCommandUseCase.DeleteArticleRequest(
                         id = 1L,
-                        username = "wrongUsername",
+                        author = 0L,
                         password = "abcDEF09"
                     )
 
@@ -359,7 +359,7 @@ class ArticleServiceTest {
                 val request =
                     ArticleCommandUseCase.DeleteArticleRequest(
                         id = 1L,
-                        username = "testUser09",
+                        author = 1L,
                         password = "wrongPassword"
                     )
 
