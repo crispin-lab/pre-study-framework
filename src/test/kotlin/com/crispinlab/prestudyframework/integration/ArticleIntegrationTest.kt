@@ -1,11 +1,13 @@
 package com.crispinlab.prestudyframework.integration
 
+import com.crispinlab.prestudyframework.adapter.article.input.web.request.WriteArticleRequest
 import com.crispinlab.prestudyframework.adapter.article.output.entity.ArticleEntity
 import com.crispinlab.prestudyframework.adapter.article.output.repository.ArticleRepository
 import com.crispinlab.prestudyframework.adapter.user.output.entity.UserEntity
 import com.crispinlab.prestudyframework.adapter.user.output.repository.UserRepository
 import com.crispinlab.prestudyframework.steps.ArticleSteps
 import com.crispinlab.prestudyframework.steps.UserSteps
+import io.restassured.http.Cookie
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
@@ -146,6 +148,54 @@ class ArticleIntegrationTest : AbstractIntegrationTest() {
                         pathParam("id", articleId)
                     } When {
                         get("/api/articles/{id}")
+                    } Then {
+                        log().all()
+                        statusCode(200)
+                    } Extract {
+                        response()
+                    }
+
+                // then
+                SoftAssertions.assertSoftly { softAssertions ->
+                    softAssertions.assertThat(response.jsonPath().getShort("code"))
+                        .isEqualTo(200)
+                    softAssertions.assertThat(response.jsonPath().getString("message"))
+                        .isEqualTo("success")
+                }
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("게시글 작성 통합 테스트")
+    inner class WriteArticleTest() {
+        @Nested
+        @DisplayName("게시글 작성 성공 통합 테스트")
+        inner class WriteArticleSuccessTest() {
+            @Test
+            @DisplayName("게시글 작성 성공 테스트")
+            fun writeArticleTest() {
+                // given
+                val request =
+                    WriteArticleRequest(
+                        title = "테스트 게시글",
+                        content = "테스트 게시글 입니다.",
+                        password = "abcDEF09"
+                    )
+
+                UserSteps.singleRegisterUser()
+                val token: String = UserSteps.loginUser()
+
+                // when
+                val response: Response =
+                    Given {
+                        log().all()
+                        contentType(MediaType.APPLICATION_JSON_VALUE)
+                        accept("application/vnd.pre-study.com-v1+json")
+                        body(request)
+                        cookie(Cookie.Builder("AUTH-TOKEN", token).build())
+                    } When {
+                        post("/api/article")
                     } Then {
                         log().all()
                         statusCode(200)
