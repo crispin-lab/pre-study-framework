@@ -17,6 +17,7 @@ val kotlinSnowflakeVersion = "1.0.1"
 val springSecurityCryptoVersion = "6.5.0"
 val nimbusJWTVersion = "10.3"
 val restdocsSpecMockMvcVersion = "0.18.2"
+val restAssuredVersion = "5.5.5"
 
 java {
     toolchain {
@@ -45,6 +46,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("com.epages:restdocs-api-spec-mockmvc:$restdocsSpecMockMvcVersion")
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+    testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")
 }
 
 if (!rootProject.extra.has("install-git-hooks")) {
