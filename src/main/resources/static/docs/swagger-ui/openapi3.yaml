@@ -7,6 +7,55 @@ servers:
 - url: http://localhost:8080
 tags: []
 paths:
+  /api/article:
+    post:
+      tags:
+      - Article
+      summary: 게시글 작성 API
+      description: 게시글 작성
+      operationId: write-article
+      parameters:
+      - name: Accept
+        in: header
+        description: API 버전 관리를 위한 ACCEPT
+        required: false
+        schema:
+          type: string
+        example: application/vnd.pre-study.com-v1+json
+      - name: Authorization
+        in: header
+        description: Authentication Token
+        required: true
+        schema:
+          type: string
+        example: token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/api-articles-id486549215"
+            examples:
+              write-article:
+                value: |-
+                  {
+                    "title" : "테스트 게시글",
+                    "content" : "테스트 게시글 입니다.",
+                    "password" : "abcDEF09"
+                  }
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/vnd.pre-study.com-v1+json:
+              schema:
+                $ref: "#/components/schemas/api-articles-id623876813"
+              examples:
+                write-article:
+                  value: |-
+                    {
+                      "code" : 200,
+                      "message" : "success"
+                    }
   /api/articles:
     get:
       tags:
@@ -53,8 +102,8 @@ paths:
                           "title" : "테스트",
                           "content" : "테스트 입니다.",
                           "author" : "테스트 작성자",
-                          "createdAt" : "2025-06-30T13:55:31.007398Z",
-                          "updatedAt" : "2025-06-30T13:55:31.007399Z"
+                          "createdAt" : "2025-07-03T03:48:49.039518Z",
+                          "updatedAt" : "2025-07-03T03:48:49.039519Z"
                         } ],
                         "count" : 1
                       }
@@ -92,7 +141,7 @@ paths:
           content:
             application/vnd.pre-study.com-v1+json:
               schema:
-                $ref: "#/components/schemas/api-users-login623876813"
+                $ref: "#/components/schemas/api-articles-id623876813"
               examples:
                 user-register:
                   value: |-
@@ -100,7 +149,7 @@ paths:
                       "code" : 200,
                       "message" : "success"
                     }
-  /api/article/{id}:
+  /api/articles/{id}:
     get:
       tags:
       - Article
@@ -127,7 +176,7 @@ paths:
           content:
             application/vnd.pre-study.com-v1+json:
               schema:
-                $ref: "#/components/schemas/api-article-id1007878106"
+                $ref: "#/components/schemas/api-articles-id1007878106"
               examples:
                 retrieve-article:
                   value: |-
@@ -139,9 +188,115 @@ paths:
                         "title" : "테스트",
                         "content" : "테스트 입니다.",
                         "author" : "테스트 작성자",
-                        "createdAt" : "2025-06-30T13:55:30.815864Z",
-                        "updatedAt" : "2025-06-30T13:55:30.815867Z"
+                        "createdAt" : "2025-07-03T03:48:48.840351Z",
+                        "updatedAt" : "2025-07-03T03:48:48.840354Z"
                       }
+                    }
+    delete:
+      tags:
+      - Article
+      summary: 게시글 삭제 API
+      description: 게시글 삭제
+      operationId: delete-article
+      parameters:
+      - name: id
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: API 버전 관리를 위한 ACCEPT
+        required: false
+        schema:
+          type: string
+        example: application/vnd.pre-study.com-v1+json
+      - name: Authorization
+        in: header
+        description: Authentication Token
+        required: true
+        schema:
+          type: string
+        example: token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/api-articles-id486549215"
+            examples:
+              delete-article:
+                value: |-
+                  {
+                    "password" : "abcDEF09"
+                  }
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/vnd.pre-study.com-v1+json:
+              schema:
+                $ref: "#/components/schemas/api-articles-id623876813"
+              examples:
+                delete-article:
+                  value: |-
+                    {
+                      "code" : 200,
+                      "message" : "success"
+                    }
+    patch:
+      tags:
+      - Article
+      summary: 게시글 업데이트 API
+      description: 게시글 업데이트
+      operationId: update-article
+      parameters:
+      - name: id
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: API 버전 관리를 위한 ACCEPT
+        required: false
+        schema:
+          type: string
+        example: application/vnd.pre-study.com-v1+json
+      - name: Authorization
+        in: header
+        description: Authentication Token
+        required: true
+        schema:
+          type: string
+        example: token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/api-articles-id486549215"
+            examples:
+              update-article:
+                value: |-
+                  {
+                    "title" : "테스트 게시글",
+                    "content" : "테스트 게시글 입니다.",
+                    "password" : "abcDEF09"
+                  }
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/vnd.pre-study.com-v1+json:
+              schema:
+                $ref: "#/components/schemas/api-articles-id623876813"
+              examples:
+                update-article:
+                  value: |-
+                    {
+                      "code" : 200,
+                      "message" : "success"
                     }
   /api/users/login:
     post:
@@ -185,7 +340,7 @@ paths:
           content:
             application/vnd.pre-study.com-v1+json:
               schema:
-                $ref: "#/components/schemas/api-users-login623876813"
+                $ref: "#/components/schemas/api-articles-id623876813"
               examples:
                 user-login:
                   value: |-
@@ -195,7 +350,7 @@ paths:
                     }
 components:
   schemas:
-    api-users-login623876813:
+    api-articles-id623876813:
       type: object
       properties:
         code:
@@ -213,7 +368,7 @@ components:
         username:
           type: string
           description: 사용자 이름
-    api-article-id1007878106:
+    api-articles-id1007878106:
       type: object
       properties:
         result:
@@ -284,3 +439,5 @@ components:
         message:
           type: string
           description: 응답 메시지
+    api-articles-id486549215:
+      type: object
