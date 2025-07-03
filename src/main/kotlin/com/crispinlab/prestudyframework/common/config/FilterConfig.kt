@@ -12,6 +12,7 @@ class FilterConfig {
         val filterRegistrationBean: FilterRegistrationBean<JWTFilter> =
             FilterRegistrationBean(jwtFilter)
         filterRegistrationBean.addUrlPatterns("/api/article/*")
+        filterRegistrationBean.addUrlPatterns("/api/articles/*")
         filterRegistrationBean.order = 1
         return filterRegistrationBean
     }
