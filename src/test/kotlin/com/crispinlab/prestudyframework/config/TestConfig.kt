@@ -1,8 +1,10 @@
 package com.crispinlab.prestudyframework.config
 
 import com.crispinlab.prestudyframework.adapter.user.input.web.AuthHeaderBuilder
+import com.crispinlab.prestudyframework.application.article.ArticleCommandUseCase
 import com.crispinlab.prestudyframework.application.article.ArticleQueryUseCase
 import com.crispinlab.prestudyframework.application.user.UserCommandUseCase
+import com.crispinlab.prestudyframework.fake.ArticleFakeCommandUseCase
 import com.crispinlab.prestudyframework.fake.ArticleFakeQueryUseCase
 import com.crispinlab.prestudyframework.fake.AuthHeaderFakeBuilder
 import com.crispinlab.prestudyframework.fake.UserFakeCommandUserCase
@@ -28,5 +30,11 @@ internal class TestConfig {
     @Primary
     fun authHeaderBuilder(): AuthHeaderBuilder {
         return AuthHeaderFakeBuilder()
+    }
+
+    @Bean
+    @Primary
+    fun articleCommandUseCase(): ArticleCommandUseCase {
+        return ArticleFakeCommandUseCase()
     }
 }
