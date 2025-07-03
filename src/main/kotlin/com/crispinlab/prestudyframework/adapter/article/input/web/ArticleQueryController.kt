@@ -36,7 +36,7 @@ internal class ArticleQueryController(
     }
 
     @GetMapping(
-        path = ["/article/{id}"],
+        path = ["/articles/{id}"],
         produces = ["application/json", "application/vnd.pre-study.com-v1+json"]
     )
     fun retrieveArticle(

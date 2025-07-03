@@ -157,7 +157,7 @@ class ArticleQueryControllerDocsTest {
             mockMvc
                 .perform(
                     MockMvcRequestBuilders
-                        .get("/api/article/{id}", articleId)
+                        .get("/api/articles/{id}", articleId)
                         .accept("application/vnd.pre-study.com-v1+json")
                 ).andDo(MockMvcResultHandlers.print())
 
