@@ -18,6 +18,7 @@ val springSecurityCryptoVersion = "6.5.0"
 val nimbusJWTVersion = "10.3"
 val restdocsSpecMockMvcVersion = "0.18.2"
 val restAssuredVersion = "5.4.0"
+val kotlinCoroutineVersion = "1.10.2"
 
 java {
     toolchain {
@@ -40,6 +41,7 @@ dependencies {
     implementation("com.nimbusds:nimbus-jose-jwt:$nimbusJWTVersion")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutineVersion")
     runtimeOnly("com.h2database:h2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -48,6 +50,7 @@ dependencies {
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")
     testImplementation("io.rest-assured:kotlin-extensions:$restAssuredVersion")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutineVersion")
 }
 
 if (!rootProject.extra.has("install-git-hooks")) {
